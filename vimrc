@@ -19,13 +19,16 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'chip/vim-fat-finger'
 
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'scrooloose/syntastic'
 Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 
+" Nice start screen when vim is opened with no args
+Plugin 'mhinz/vim-startify'
+
 " Graph your undo tree
 Plugin 'sjl/gundo.vim'
+Plugin 'mbbill/undotree'
 
 " Buffer, file, tab, workspace, bookmark fuzzy search
 Plugin 'vim-ctrlspace/vim-ctrlspace'
@@ -46,6 +49,10 @@ Plugin 'ervandew/supertab'
 
 " Code completion engine
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
+
+" Syntax checker
+Plugin 'scrooloose/syntastic'
 
 " Insert snippets (engine only)
 Plugin 'SirVer/ultisnips'
@@ -55,6 +62,9 @@ Plugin 'honza/vim-snippets'
 
 " Pull C++ function prototypes from headers into implementation files
 Plugin 'derekwyatt/vim-protodef'
+
+" protodef depends on fswitch
+Plugin 'derekwyatt/vim-fswitch'
 
 " Run a terminal from within vim
 Plugin 'vim-scripts/Conque-Shell'
@@ -73,6 +83,9 @@ Plugin 'vim-airline/vim-airline'
 
 " Generate a shell prompt from airline config
 Plugin 'edkolev/promptline.vim'
+
+" File navigation tree window
+Plugin 'scrooloose/nerdtree'
 
 " VCS plugins
 
@@ -137,25 +150,31 @@ set hlsearch
 set incsearch
 set hidden
 set wildmode=list:longest,full
+set wildignore=*.o,*.so,*.bin
 map <F1> :bp<CR>
 map <F2> :bn<CR>
 map <F3> :b#<CR>
-map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
-map <F5> :FF<CR>
-map <F6> :FC .<CR>
-map <F7> :ConqueTermSplit bash --login<CR>
+map <F4> :FSHere<CR>
+map <F5> :YcmCompleter GoToInclude<CR>
+map <F6> :NERDTreeToggle<CR>
+map <F7> :UndoTreeToggle<CR>
 set pastetoggle=<F8>
 nmap <F9> <Plug>(altr-forward)
 nmap <S-F9> <Plug>(altr-back)
-nmap <F10> :TagbarToggle<CR>
-nnoremap <F11> :GundoToggle<CR>
+map <F10> :lop<CR>
+map <S-F10> :lcl<CR>
+map <F11> :TagbarToggle<CR>
+map <F12> :GundoToggle<CR>
+" workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
+nnoremap <leader>bd :bp<cr>:bd #<cr>
 
-let g:FindFileIgnore = ['*.o', '*.d', '*/CVS/*']
+let g:FindFileIgnore = ['*.o', '*.d']
 let g:ConqueTerm_CloseOnEnd = 1
 " Mark plugin config
 " Mark plugin may be found at http://www.vim.org/scripts/script.php?script_id=2666
 let g:mwIgnoreCase = 0
 let g:mwAutoLoadMarks = 1
+let g:mwDefaultHighlightingPalette = 'extended'
 " multiple-cursors config
 let g:multi_cursor_use_default_mapping=0
 let g:multi_cursor_next_key='<C-y>'
@@ -163,11 +182,14 @@ let g:multi_cursor_prev_key='<C-u>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 let [&nu, &rnu] = [&nu+&rnu==0, &nu]
-"map <silent> <C-l> :setl <C-R>=&rnu ? "nornu" : "rnu"<CR><CR>
 map <silent> <C-l> :setl <C-R>=&rnu ? "nornu" : "rnu"<CR><CR>
 map <silent> <C-n> :set invhlsearch<CR>
 map <silent> <C-m> :set invspell<CR>
 map <silent> <C-h> :MarkClear<CR>
+nnoremap <silent> <C-Right> :wincmd l<CR>
+nnoremap <silent> <C-Left> :wincmd h<CR>
+nnoremap <silent> <C-Up> :wincmd k<CR>
+nnoremap <silent> <C-Down> :wincmd j<CR>
 hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
@@ -181,10 +203,15 @@ let g:signify_vcs_list = [ 'git' ]
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_cpp_checkers = []
+let g:syntastic_c_checkers = []
+let g:ycm_always_populate_location_list = 1
 let g:syntastic_always_populate_loc_list = 1
+let g:ycm_open_loclist_on_ycm_diags = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_cpp_compiler_options = ' -std=c++14 -Wall -Wextra'
 " openbrowser config
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
@@ -211,7 +238,7 @@ set undodir=~/.vim/undodir
 set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number of lines to save for undo on a buffer reload
-set spell
+"set spell
 set viminfo+=!  " Save and restore global variables
 set number
 set foldmethod=syntax
@@ -245,3 +272,43 @@ autocmd BufWinEnter * normal zR
 
 " ctrlp config
 let g:ctrlp_user_command = 'find %s -regextype egrep -type f -regex ".*\.(cpp|h|hpp)"'
+let g:ctrlp_by_filename = 1
+let g:ctrlp_reuse_window = 'startify'
+
+" Switch to the file and load it into the current window >
+nmap <silent> <Leader>of :FSHere<cr>
+" Switch to the file and load it into the window on the right >
+nmap <silent> <Leader>ol :FSRight<cr>
+" Switch to the file and load it into a new window split on the right >
+nmap <silent> <Leader>oL :FSSplitRight<cr>
+" Switch to the file and load it into the window on the left >
+nmap <silent> <Leader>oh :FSLeft<cr>
+" Switch to the file and load it into a new window split on the left >
+nmap <silent> <Leader>oH :FSSplitLeft<cr>
+" Switch to the file and load it into the window above >
+nmap <silent> <Leader>ok :FSAbove<cr>
+" Switch to the file and load it into a new window split above >
+nmap <silent> <Leader>oK :FSSplitAbove<cr>
+" Switch to the file and load it into the window below >
+nmap <silent> <Leader>oj :FSBelow<cr>
+" Switch to the file and load it into a new window split below >
+nmap <silent> <Leader>oJ :FSSplitBelow<cr>
+
+let g:ycm_confirm_extra_conf = 0
+
+" tagbar config
+let g:tagbar_show_linenumbers = -1
+autocmd BufEnter * nested :call tagbar#autoopen(0)
+
+" NERDTree config
+let NERDTreeIgnore = ['\.o$', '\.a$', '\.bin$', '\~$']
+let NERDTreeWinSize = 40
+
+autocmd VimEnter *
+                \   if !argc()
+                \ |   Startify
+                \ | endif
+                \ |   NERDTree
+                \ |   wincmd w
+
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
