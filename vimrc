@@ -3,7 +3,6 @@ execute pathogen#infect()
 set nocompatible
 filetype off
 
-" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -20,8 +19,8 @@ Plugin 'chip/vim-fat-finger'
 
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Shougo/unite.vim'
-Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
+Plugin 'alx741/vinfo'
 
 " Nice start screen when vim is opened with no args
 Plugin 'mhinz/vim-startify'
@@ -48,7 +47,6 @@ Plugin 'majutsushi/tagbar'
 Plugin 'ervandew/supertab'
 
 " Code completion engine
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 
 " Syntax checker
@@ -62,6 +60,9 @@ Plugin 'honza/vim-snippets'
 
 " Pull C++ function prototypes from headers into implementation files
 Plugin 'derekwyatt/vim-protodef'
+
+" Run google test framework unit tests within vim
+Plugin 'alepez/vim-gtest'
 
 " protodef depends on fswitch
 Plugin 'derekwyatt/vim-fswitch'
@@ -87,6 +88,9 @@ Plugin 'edkolev/promptline.vim'
 " File navigation tree window
 Plugin 'scrooloose/nerdtree'
 
+" Show git status symbols in the nerd tree
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+
 " VCS plugins
 
 " Git wrapper
@@ -97,6 +101,12 @@ Plugin 'mhinz/vim-signify'
 
 " Show a git diff in the gutter (sign column) and stage/revert hunks.
 Plugin 'airblade/vim-gitgutter'
+
+" silver searcher plugin
+Plugin 'mileszs/ack.vim'
+
+" ack.vim alternative
+Plugin 'dyng/ctrlsf.vim'
 
 " Commenting plugins
 
@@ -118,7 +128,7 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'kana/vim-altr'
 
 " Open file:line:col
-Plugin 'bogado/file-line'
+Plugin 'kopischke/vim-fetch'
 
 " Themes
 Plugin 'AlessandroYorba/Alduin'
@@ -130,9 +140,22 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'baskerville/bubblegum'
 Plugin 'romainl/Apprentice'
 Plugin 'morhetz/gruvbox'
+Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'koron/nyancat-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end() " required
+
+call plug#begin('~/.vim/bundle')
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+
+call plug#end()
 
 filetype plugin indent on
 set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -151,6 +174,7 @@ set incsearch
 set hidden
 set wildmode=list:longest,full
 set wildignore=*.o,*.so,*.bin
+set cursorline
 map <F1> :bp<CR>
 map <F2> :bn<CR>
 map <F3> :b#<CR>
@@ -190,8 +214,8 @@ nnoremap <silent> <C-Right> :wincmd l<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Up> :wincmd k<CR>
 nnoremap <silent> <C-Down> :wincmd j<CR>
-hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
-hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+"hi CursorColumn cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 " QuickScope config
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
@@ -247,10 +271,13 @@ set linebreak
 set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='apprentice'
+"let g:airline_theme='apprentice'
+let g:airline_theme='PaperColor'
 abbreviate #i #include
 abbreviate #d #define
-colorscheme apprentice
+colorscheme PaperColor
+"colorscheme apprentice
+hi clear CursorLine
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline
 highlight SpellLocal ctermbg=none cterm=underline
@@ -312,3 +339,34 @@ autocmd VimEnter *
                 \ |   wincmd w
 
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" ack/silver searcher config
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" ctrlsf config
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+vmap     <C-F>F <Plug>CtrlSFVwordExec
+nmap     <C-F>n <Plug>CtrlSFCwordPath
+nmap     <C-F>p <Plug>CtrlSFPwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+
+" vim-gtest config
+
+augroup GTest
+    autocmd FileType cpp nnoremap <silent> <leader>tt :GTestRun<CR>
+    autocmd FileType cpp nnoremap <silent> <leader>tu :GTestRunUnderCursor<CR>
+    autocmd FileType cpp nnoremap          <leader>tc :GTestCase<space>
+    autocmd FileType cpp nnoremap          <leader>tn :GTestName<space>
+    autocmd FileType cpp nnoremap <silent> <leader>te :GTestToggleEnabled<CR>
+    autocmd FileType cpp nnoremap <silent> ]T         :GTestNext<CR>
+    autocmd FileType cpp nnoremap <silent> [T         :GTestPrev<CR>
+    autocmd FileType cpp nnoremap <silent> <leader>tf :CtrlPGTest<CR>
+    autocmd FileType cpp nnoremap <silent> <leader>tj :GTestJump<CR>
+    autocmd FileType cpp nnoremap          <leader>ti :GTestNewTest<CR>i
+augroup END
+

@@ -13,16 +13,13 @@ fi
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-#export GITAWAREPROMPT=~/.bash/git-aware-prompt
-#. "${GITAWAREPROMPT}/main.sh"
-
 txtrst="$(tput sgr 0 2>/dev/null || echo '\e[0m')"
 txtornge=$(tput setaf 166 2>/dev/null || echo "\e[1;33m")
 
 alias ls='ls --color -F'
-alias ll='ls -l'
+alias ll='ls -h --full-time'
 alias l.='ls -d .*'
-alias l='ls -l'
+alias l='exa -lgh'
 alias sl=ls
 alias tial=tail
 alias cx='chmod +x'
@@ -37,14 +34,8 @@ alias diff=colordiff
 
 export TERM=xterm-256color
 
-#export PS1="\[\e]0;[\h] \w\a\]\n\[\e[31m\]\u@\h \[\e[33m\]\w\[\033[0;32m\]\[\e[0m\]\$ "
-#export PS1="\[$txtylw\][\!] \[$txtornge\]\u\[$txtrst\]@\[$txtylw\]\h:\[$txtgrn\]\w\[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
-
-# this is the agility prompt
-#export PS1="\[$txtornge\]\u\[$txtrst\]@\[$txtylw\]\h:\[$txtgrn\]\w\[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
-
-#export PATH=$HOME/bin:$PATH
 export LD_LIBRARY_PATH=$HOME/lib
+export PATH=$PATH:$HOME/.cargo/bin
 export LESS='-JFXRs'
 export PAGER=less
 export EDITOR=vim
@@ -52,8 +43,9 @@ export HISTFILESIZE=40000
 export HISTSIZE=40000
 export HISTTIMEFORMAT="[%Y-%m-%d %H:%M:%S] "
 export HISTCONTROL="ignoredups"
-export PYTHONPATH=$HOME/lib/python3.4/site-packages
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
+export ENHANCD_FILTER=fpp:fzf:percol:pick:selecta
 
 # Less Colors for Man Pages
 #export LESS_TERMCAP_mb=$'\E[01;31m' # begin blinking
@@ -74,7 +66,6 @@ export LESS_TERMCAP_us=$'\E[01;32m' # begin underline
 export GROFF_NO_SGR=yes
 export MAN_POSIXLY_CORRECT=1
 #export JAVA_HOME=/usr/java/latest
-#eval `dircolors $HOME/dircolors-solarized/dircolors.256dark`
 
 findctor() {
     egrep -Inr -- "(make_shared\s*<\s*|new\s+|make_unique\s*<\s*)[_a-zA-Z0-9:]*$1\s*(<.*)?>?\s*\(" $2
@@ -122,65 +113,6 @@ vimh() {
 vimc() {
     vimfind "$1" c "$2"
 }
-
-# This function defines a 'cd' replacement function capable of keeping,
-# displaying and accessing history of visited directories, up to 10 entries.
-# To use it, uncomment it, source this file and try 'cd --'.
-# acd_func 1.0.5, 10-nov-2004
-# Petar Marinov, http:/geocities.com/h2428, this is public domain
-cd_func ()
-{
-  local x2 the_new_dir adir index
-  local -i cnt
-
-  if [[ $1 ==  "--" ]]; then
-    dirs -v
-    return 0
-  fi
-
-  the_new_dir=$1
-  [[ -z $1 ]] && the_new_dir=$HOME
-
-  if [[ ${the_new_dir:0:1} == '-' ]]; then
-    #
-    # Extract dir N from dirs
-    index=${the_new_dir:1}
-    [[ -z $index ]] && index=1
-    adir=$(dirs +$index)
-    [[ -z $adir ]] && return 1
-    the_new_dir=$adir
-  fi
-
-  #
-  # '~' has to be substituted by ${HOME}
-  [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}"
-
-  #
-  # Now change to the new dir and add to the top of the stack
-  pushd "${the_new_dir}" > /dev/null
-  [[ $? -ne 0 ]] && return 1
-  the_new_dir=$(pwd)
-
-  #
-  # Trim down everything beyond 11th entry
-  popd -n +11 2>/dev/null 1>/dev/null
-
-  #
-  # Remove any other occurence of this dir, skipping the top of the stack
-  for ((cnt=1; cnt <= 10; cnt++)); do
-    x2=$(dirs +${cnt} 2>/dev/null)
-    [[ $? -ne 0 ]] && return 0
-    [[ ${x2:0:1} == '~' ]] && x2="${HOME}${x2:1}"
-    if [[ "${x2}" == "${the_new_dir}" ]]; then
-      popd -n +$cnt 2>/dev/null 1>/dev/null
-      cnt=cnt-1
-    fi
-  done
-
-  return 0
-}
-
-alias cd=cd_func
 
 # Automatically add completion for all aliases to commands having completion functions
 function alias_completion {
@@ -275,15 +207,22 @@ then
     alias df='colourify df'
 fi
 
+export HH_CONFIG=hicolor
+# if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
+if [[ $- =~ .*i.* ]]; then bind '"\C-n": "\C-a hh \C-j"'; fi
+
 # Base16 Shell (Konsole is broken, so not using)
 #BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 #[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-. .shell_prompt.sh
+[[ -s ~/.shell_prompt.sh ]] && . .shell_prompt.sh
+[[ -s ~/.fzf.bash ]] && source ~/.fzf.bash
+[[ -s ~/enhancd/enhancd.sh ]] && . ~/enhancd/enhancd.sh
 
 if [[ $- =~ i ]] ; then
     doge
     date
     fortune
 fi
+
 
