@@ -13,9 +13,6 @@ fi
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-txtrst="$(tput sgr 0 2>/dev/null || echo '\e[0m')"
-txtornge=$(tput setaf 166 2>/dev/null || echo "\e[1;33m")
-
 alias ls='ls --color -F'
 alias ll='ls -h --full-time'
 alias l.='ls -d .*'
