@@ -70,7 +70,7 @@ Plug 'dyng/ctrlsf.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tomtom/tcomment_vim'
 
-" Motion Plugs
+" Motion Plugins
 
 " Generate shortcuts using 's'
 Plug 'justinmk/vim-sneak'
