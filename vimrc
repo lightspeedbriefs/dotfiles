@@ -21,6 +21,8 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimshell.vim'
 Plugin 'alx741/vinfo'
+Plugin 'junegunn/vim-peekaboo'
+Plugin 'lfv89/vim-interestingwords'
 
 " Nice start screen when vim is opened with no args
 Plugin 'mhinz/vim-startify'
@@ -63,6 +65,9 @@ Plugin 'derekwyatt/vim-protodef'
 
 " Run google test framework unit tests within vim
 Plugin 'alepez/vim-gtest'
+
+" Look up documentation for by pressing gK
+Plugin 'keith/investigate.vim'
 
 " protodef depends on fswitch
 Plugin 'derekwyatt/vim-fswitch'
@@ -270,6 +275,8 @@ set foldcolumn=1
 set linebreak
 set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ycm#enabled = 1
+let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
 "let g:airline_theme='apprentice'
 let g:airline_theme='PaperColor'
