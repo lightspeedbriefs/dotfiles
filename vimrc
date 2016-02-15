@@ -1,167 +1,152 @@
-execute pathogen#infect()
-
-set nocompatible
-filetype off
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Plugin managers
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-pathogen'
-Plugin 'junegunn/vim-plug'
-
-" Place, toggle, and display marks
-Plugin 'kshenoy/vim-signature'
-
-" Correct common misspellings and typos
-Plugin 'chip/vim-fat-finger'
-
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'Shougo/unite.vim'
-Plugin 'Shougo/vimshell.vim'
-Plugin 'alx741/vinfo'
-Plugin 'junegunn/vim-peekaboo'
-Plugin 'lfv89/vim-interestingwords'
-
-" Nice start screen when vim is opened with no args
-Plugin 'mhinz/vim-startify'
-
-" Graph your undo tree
-Plugin 'sjl/gundo.vim'
-Plugin 'mbbill/undotree'
-
-" Buffer, file, tab, workspace, bookmark fuzzy search
-Plugin 'vim-ctrlspace/vim-ctrlspace'
-
-" Fuzzy file, buffer, mru, tag, etc. finder
-Plugin 'ctrlpvim/ctrlp.vim'
-
-" Align statements such as assignments
-Plugin 'junegunn/vim-easy-align'
-
-" Regenerate tags files while you work
-Plugin 'ludovicchabant/vim-gutentags'
-
-" Browse tags for the current file to get an overview of its structure in a sidebar
-Plugin 'majutsushi/tagbar'
-
-Plugin 'ervandew/supertab'
+call plug#begin('~/.vim/bundle')
 
 " Code completion engine
-Plugin 'rdnetto/YCM-Generator'
+Plug 'rdnetto/YCM-Generator', {'branch': 'stable'}
 
 " Syntax checker
-Plugin 'scrooloose/syntastic'
-
-" Insert snippets (engine only)
-Plugin 'SirVer/ultisnips'
+Plug 'scrooloose/syntastic'
 
 " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 
 " Pull C++ function prototypes from headers into implementation files
-Plugin 'derekwyatt/vim-protodef'
+Plug 'derekwyatt/vim-protodef'
 
-" Run google test framework unit tests within vim
-Plugin 'alepez/vim-gtest'
+" Browse tags for the current file to get an overview of its structure in a sidebar
+Plug 'majutsushi/tagbar'
 
-" Look up documentation for by pressing gK
-Plugin 'keith/investigate.vim'
+Plug 'ervandew/supertab'
 
-" protodef depends on fswitch
-Plugin 'derekwyatt/vim-fswitch'
+" Nice start screen when vim is opened with no args
+Plug 'mhinz/vim-startify'
 
-" Run a terminal from within vim
-Plugin 'vim-scripts/Conque-Shell'
+" Graph your undo tree
+Plug 'sjl/gundo.vim'
+Plug 'mbbill/undotree'
 
-" Manipulate gists directly from vim
-Plugin 'lambdalisue/vim-gista'
+" Buffer, file, tab, workspace, bookmark fuzzy search
+Plug 'vim-ctrlspace/vim-ctrlspace'
 
-" Execute all or part of the current file you're editing
-Plugin 'thinca/vim-quickrun'
+" Fuzzy file, buffer, mru, tag, etc. finder
+Plug 'ctrlpvim/ctrlp.vim'
 
-" Open a link by pressing 'gx' on it, or search a word or phrase by pressing 'gx' on it
-Plugin 'tyru/open-browser.vim'
+" Align statements such as assignments
+Plug 'junegunn/vim-easy-align'
 
-" Create an awesome status line
-Plugin 'vim-airline/vim-airline'
+" Regenerate tags files while you work
+Plug 'ludovicchabant/vim-gutentags'
 
-" Generate a shell prompt from airline config
-Plugin 'edkolev/promptline.vim'
+" Place, toggle, and display marks
+Plug 'kshenoy/vim-signature'
+
+" Correct common misspellings and typos
+Plug 'chip/vim-fat-finger'
 
 " File navigation tree window
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 " Show git status symbols in the nerd tree
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " VCS plugins
 
 " Git wrapper
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " Show differences
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 
 " Show a git diff in the gutter (sign column) and stage/revert hunks.
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 
 " silver searcher plugin
-Plugin 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim'
 
 " ack.vim alternative
-Plugin 'dyng/ctrlsf.vim'
+Plug 'dyng/ctrlsf.vim'
 
 " Commenting plugins
 
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tomtom/tcomment_vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tomtom/tcomment_vim'
 
-" Motion Plugins
+" Motion Plugs
 
 " Generate shortcuts using 's'
-Plugin 'justinmk/vim-sneak'
+Plug 'justinmk/vim-sneak'
 
 " Highlight targets for character motions ('f', 'F', 't', 'T', ';', ',')
-Plugin 'unblevable/quick-scope'
+Plug 'unblevable/quick-scope'
 
 " Generate ultra-fast shortcuts to move anywhere
-Plugin 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 
 " Switch between source and header (alternatives to this include a.vim and fswitch)
-Plugin 'kana/vim-altr'
+Plug 'kana/vim-altr'
 
 " Open file:line:col
-Plugin 'kopischke/vim-fetch'
+Plug 'kopischke/vim-fetch'
 
-" Themes
-Plugin 'AlessandroYorba/Alduin'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'tomasr/molokai'
-Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
-Plugin 'chriskempson/base16-vim'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'baskerville/bubblegum'
-Plugin 'romainl/Apprentice'
-Plugin 'morhetz/gruvbox'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'koron/nyancat-vim'
+" Run google test framework unit tests within vim
+Plug 'alepez/vim-gtest'
 
-" All of your Plugins must be added before the following line
-call vundle#end() " required
+" Look up documentation for by pressing gK
+Plug 'keith/investigate.vim'
 
-call plug#begin('~/.vim/bundle')
+" protodef depends on fswitch
+Plug 'derekwyatt/vim-fswitch'
+
+" Run a terminal from within vim
+Plug 'vim-scripts/Conque-Shell'
+
+" Manipulate gists directly from vim
+Plug 'lambdalisue/vim-gista'
+
+" Execute all or part of the current file you're editing
+Plug 'thinca/vim-quickrun'
+
+" Open a link by pressing 'gx' on it, or search a word or phrase by pressing 'gx' on it
+Plug 'tyru/open-browser.vim'
+
+" Create an awesome status line
+Plug 'vim-airline/vim-airline'
+
+" Generate a shell prompt from airline config
+Plug 'edkolev/promptline.vim'
+
+Plug 'terryma/vim-multiple-cursors'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimshell.vim'
+Plug 'alx741/vinfo'
+Plug 'junegunn/vim-peekaboo'
+Plug 'lfv89/vim-interestingwords'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
+" Themes
+Plug 'AlessandroYorba/Alduin'
+Plug 'altercation/vim-colors-solarized'
+Plug 'tomasr/molokai'
+Plug 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+Plug 'chriskempson/base16-vim'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'baskerville/bubblegum'
+Plug 'romainl/Apprentice'
+Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'ryanoasis/vim-devicons'
+Plug 'koron/nyancat-vim'
+
+" Insert snippets (engine only)
+Plug 'SirVer/ultisnips'
+
 call plug#end()
 
+set nocompatible
 filetype plugin indent on
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set autoindent
