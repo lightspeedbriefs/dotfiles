@@ -1,0 +1,13 @@
+[core]
+	editor = vim
+[credential]
+	helper = cache --timeout=3600
+[diff]
+	algorithm = histogram
+[alias]
+    st = status 
+    co = checkout
+    ci = commit
+    br = branch
+[include]
+    path = ~/.gitconfig.local
