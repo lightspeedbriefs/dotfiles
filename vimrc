@@ -174,7 +174,7 @@ map <F3> :b#<CR>
 map <F4> :FSHere<CR>
 map <F5> :YcmCompleter GoToInclude<CR>
 map <F6> :NERDTreeToggle<CR>
-map <F7> :UndoTreeToggle<CR>
+map <F7> :UndotreeToggle<CR>
 set pastetoggle=<F8>
 nmap <F9> <Plug>(altr-forward)
 nmap <S-F9> <Plug>(altr-back)
