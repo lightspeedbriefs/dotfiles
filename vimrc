@@ -29,6 +29,7 @@ Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " Fuzzy file, buffer, mru, tag, etc. finder
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'sgur/ctrlp-extensions.vim'
 
 " Align statements such as assignments
 Plug 'junegunn/vim-easy-align'
