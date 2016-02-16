@@ -120,6 +120,7 @@ Plug 'Shougo/vimshell.vim'
 Plug 'alx741/vinfo'
 Plug 'junegunn/vim-peekaboo'
 Plug 'lfv89/vim-interestingwords'
+Plug 'gorkunov/smartpairs.vim'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
@@ -140,6 +141,7 @@ Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'ryanoasis/vim-devicons'
 Plug 'koron/nyancat-vim'
+Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 
 " Insert snippets (engine only)
 Plug 'SirVer/ultisnips'
@@ -264,11 +266,13 @@ let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
 "let g:airline_theme='apprentice'
-let g:airline_theme='PaperColor'
+"let g:airline_theme='PaperColor'
+let g:airline_theme='tomorrow'
 abbreviate #i #include
 abbreviate #d #define
-colorscheme PaperColor
+"colorscheme PaperColor
 "colorscheme apprentice
+colorscheme Tomorrow-Night
 hi clear CursorLine
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline
