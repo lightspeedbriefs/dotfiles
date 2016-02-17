@@ -28,6 +28,7 @@ alias vi=vim
 alias vimt='vim -t'
 alias g++='g++ -std=c++14 -Werror -Wall -Wextra'
 alias diff=colordiff
+alias dmesg='dmesg -H'
 
 export TERM=xterm-256color
 
@@ -43,6 +44,9 @@ export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
 export ENHANCD_FILTER=fpp:fzf:percol:pick:selecta
+if [[ -n "$DISPLAY" ]] ; then
+    export BROWSER=firefox
+fi
 
 # Less Colors for Man Pages
 #export LESS_TERMCAP_mb=$'\E[01;31m' # begin blinking

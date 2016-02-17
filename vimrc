@@ -66,6 +66,9 @@ Plug 'mileszs/ack.vim'
 " ack.vim alternative
 Plug 'dyng/ctrlsf.vim'
 
+" grepper
+Plug 'mhinz/vim-grepper'
+
 " Commenting plugins
 
 Plug 'scrooloose/nerdcommenter'
@@ -274,7 +277,7 @@ abbreviate #d #define
 "colorscheme PaperColor
 "colorscheme apprentice
 colorscheme Tomorrow-Night
-hi clear CursorLine
+"hi clear CursorLine " need CursorLine highlighted for ctrlp
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline
 highlight SpellLocal ctermbg=none cterm=underline
