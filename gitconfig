@@ -1,9 +1,10 @@
 [core]
-	editor = vim
+    editor = vim
+    pager = diff-highlight | less -r
 [credential]
-	helper = cache --timeout=3600
+    helper = cache --timeout=3600
 [diff]
-	algorithm = histogram
+    algorithm = histogram
 [alias]
     st = status 
     co = checkout

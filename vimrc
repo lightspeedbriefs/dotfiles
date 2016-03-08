@@ -305,8 +305,8 @@ function! StripTrailingWhitespace()
   normal dmZ
   SignatureToggleSigns
 endfunction
-autocmd BufWritePre Makefile,*.inc,*.mk,*.c,*.cpp,*.h,*.pl,*.pm,*.sh,*.rb,*.py,*.xml,*.gradle,.vimrc,.bashrc,.bash_profile,.zshrc :call StripTrailingWhitespace()
-autocmd BufWritePre Makefile,*.inc,*.mk,*.c,*.cpp,*.h,*.pl,*.pm,*.sh,*.rb,*.py,*.xml,*.gradle,.vimrc,.bashrc,.bash_profile,.zshrc retab
+autocmd BufWritePre Makefile,*.inc,*.mk,*.c,*.cpp,*.h,*.hpp,*.pl,*.pm,*.sh,*.rb,*.py,*.xml,*.gradle,.vimrc,.bashrc,.bash_profile,.zshrc,.gitconfig :call StripTrailingWhitespace()
+autocmd BufWritePre Makefile,*.inc,*.mk,*.c,*.cpp,*.h,*.hpp,*.pl,*.pm,*.sh,*.rb,*.py,*.xml,*.gradle,.vimrc,.bashrc,.bash_profile,.zshrc,.gitconfig retab
 "autocmd VimEnter * FC .
 autocmd BufWinEnter * normal zR
 
