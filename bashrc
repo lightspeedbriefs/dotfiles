@@ -29,6 +29,10 @@ alias vimt='vim -t'
 alias g++='g++ -std=c++14 -Werror -Wall -Wextra'
 alias diff=colordiff
 alias dmesg='dmesg -H'
+alias agc='ag --cc'
+alias agx='ag --cpp'
+alias resolvedir='cd $(/bin/pwd)'
+alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
 
 export TERM=xterm-256color
 
@@ -43,7 +47,8 @@ export HISTTIMEFORMAT="[%Y-%m-%d %H:%M:%S] "
 export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-export ENHANCD_FILTER=fpp:fzf:percol:pick:selecta
+export ENHANCD_FILTER=fzf:percol:pick:selecta:fpp
+export ENHANCD_DISABLE_HYPHEN=1
 if [[ -n "$DISPLAY" ]] ; then
     export BROWSER=firefox
 fi
@@ -73,12 +78,6 @@ findctor() {
 }
 cgrep() {
     egrep -Irn --color --include "*.cpp" --include "*.h" --include="*.hpp" -- "$@" | egrep -v "(cpp|h|hpp):[[:digit:]]+:[[:space:]]*//" | egrep --color -- "$1"
-}
-gentags() {
-    ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++ "$1"
-}
-resolvedir() {
-    cd `/bin/pwd`
 }
 viml() {
     if [[ $# -ne 2 ]] ; then
@@ -115,8 +114,33 @@ vimc() {
     vimfind "$1" c "$2"
 }
 
+GRC=`which grc`
+if [ "$TERM" != dumb ] && [ -n "$GRC" ]
+then
+    alias colourify="$GRC -es --colour=auto"
+    alias configure='colourify ./configure'
+    alias diff='colourify diff'
+    alias make='colourify make'
+    #alias gcc='colourify gcc'
+    #alias g++='colourify g++'
+    alias as='colourify as'
+    alias gas='colourify gas'
+    alias ld='colourify ld'
+    alias netstat='colourify netstat'
+    alias ping='colourify ping'
+    alias traceroute='colourify /usr/sbin/traceroute'
+    alias head='colourify head'
+    alias tail='colourify tail'
+    alias dig='colourify dig'
+    alias mount='colourify mount'
+    alias ps='colourify ps'
+    alias mtr='colourify mtr'
+    alias df='colourify df'
+fi
+
 # Automatically add completion for all aliases to commands having completion functions
 function alias_completion {
+    COMP_CWORD=1
     local namespace="alias_completion"
 
     # parse function based completion definitions, where capture group 2 => function and 3 => trigger
@@ -183,30 +207,6 @@ function alias_completion {
     done < <(alias -p | sed -Ene "s/$alias_regex/\1 '\2' '\3'/p")
     source "$tmp_file" && rm -f "$tmp_file"
 }; alias_completion
-
-GRC=`which grc`
-if [ "$TERM" != dumb ] && [ -n "$GRC" ]
-then
-    alias colourify="$GRC -es --colour=auto"
-    alias configure='colourify ./configure'
-    alias diff='colourify diff'
-    alias make='colourify make'
-    #alias gcc='colourify gcc'
-    #alias g++='colourify g++'
-    alias as='colourify as'
-    alias gas='colourify gas'
-    alias ld='colourify ld'
-    alias netstat='colourify netstat'
-    alias ping='colourify ping'
-    alias traceroute='colourify /usr/sbin/traceroute'
-    alias head='colourify head'
-    alias tail='colourify tail'
-    alias dig='colourify dig'
-    alias mount='colourify mount'
-    alias ps='colourify ps'
-    alias mtr='colourify mtr'
-    alias df='colourify df'
-fi
 
 export HH_CONFIG=hicolor
 # if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
