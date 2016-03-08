@@ -140,7 +140,7 @@ fi
 
 # Automatically add completion for all aliases to commands having completion functions
 function alias_completion {
-    COMP_CWORD=1
+    local COMP_CWORD=1
     local namespace="alias_completion"
 
     # parse function based completion definitions, where capture group 2 => function and 3 => trigger
