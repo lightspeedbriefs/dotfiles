@@ -216,7 +216,7 @@ if [[ $- =~ .*i.* ]]; then bind '"\C-n": "\C-a hh \C-j"'; fi
 #BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 #[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-[[ -s ~/.shell_prompt.sh ]] && . .shell_prompt.sh
+[[ -s ~/.shell_prompt2.sh ]] && . .shell_prompt2.sh
 [[ -s ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -s ~/enhancd/enhancd.sh ]] && . ~/enhancd/enhancd.sh
 

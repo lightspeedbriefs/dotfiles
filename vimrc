@@ -49,6 +49,12 @@ Plug 'scrooloose/nerdtree'
 " Show git status symbols in the nerd tree
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
+" Read man pages in vim
+Plug 'nhooyr/neoman.vim'
+
+" Read devdocs in vim
+Plug 'rhysd/devdocs.vim'
+
 " VCS plugins
 
 " Git wrapper
@@ -68,6 +74,9 @@ Plug 'dyng/ctrlsf.vim'
 
 " grepper
 Plug 'mhinz/vim-grepper'
+
+" Incremental search highlighting of all hits
+Plug 'haya14busa/incsearch.vim'
 
 " Commenting plugins
 
@@ -166,7 +175,6 @@ set incsearch
 set title
 set virtualedit=all
 set hlsearch
-set incsearch
 set hidden
 set wildmode=list:longest,full
 set wildignore=*.o,*.so,*.bin
@@ -187,6 +195,11 @@ map <F11> :TagbarToggle<CR>
 map <F12> :GundoToggle<CR>
 " workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
 nnoremap <leader>bd :bp<cr>:bd #<cr>
+nnoremap <leader>ac :Ack --cc "\b<cword>\b"<cr>
+nnoremap <leader>ax :Ack --cpp "\b<cword>\b"<cr>
+nnoremap <leader>sc :execute 'CtrlSF -filetype cc \b' . expand("<cword>") . '\b'<cr>:set filetype=c<cr>
+nnoremap <leader>sx :execute 'CtrlSF -filetype cpp \b' . expand("<cword>") . '\b'<cr>:set filetype=cpp<cr>
+nnoremap <C-Bslash> :CtrlPBuffer<cr>
 
 let g:FindFileIgnore = ['*.o', '*.d']
 let g:ConqueTerm_CloseOnEnd = 1
@@ -301,6 +314,7 @@ autocmd BufWinEnter * normal zR
 let g:ctrlp_user_command = 'find %s -regextype egrep -type f -regex ".*\.(cpp|h|hpp)"'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
+let g:startify_change_to_dir = 0
 
 " Switch to the file and load it into the current window >
 nmap <silent> <Leader>of :FSHere<cr>
@@ -335,8 +349,8 @@ autocmd VimEnter *
                 \   if !argc()
                 \ |   Startify
                 \ | endif
-                \ |   NERDTree
-                \ |   wincmd w
+                \ | NERDTree
+                \ | wincmd w
 
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -354,6 +368,8 @@ nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
 nnoremap <C-F>t :CtrlSFToggle<CR>
 inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+let g:ctrlsf_winsize = '35%'
+let g:ctrlsf_regex_pattern = 1
 
 " vim-gtest config
 
@@ -370,3 +386,4 @@ augroup GTest
     autocmd FileType cpp nnoremap          <leader>ti :GTestNewTest<CR>i
 augroup END
 
+autocmd FileType startify setlocal buftype=
