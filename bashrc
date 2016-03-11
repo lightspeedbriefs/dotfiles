@@ -33,6 +33,27 @@ alias agc='ag --cc'
 alias agx='ag --cpp'
 alias resolvedir='cd $(/bin/pwd)'
 alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
+VIM_EXE=$(which vim 2>/dev/null)
+if [[ ! -x "$VIM_EXE" ]] ; then
+    VIM_EXE=$(which vi)
+fi
+export VIM_EXE
+fvim() {
+    if [[ $# -ge 1 ]] ; then
+        local fpat="-name $1"
+    fi
+    'find' . -maxdepth 1 -type f $fpat -exec 'grep' -Iq . {} \; -and -print | 'fpp'
+}
+vim() {
+    for arg in "$@" ; do
+        if [[ -s "$arg" ]] ; then
+            if ! 'grep' -Iq . "$arg" ; then
+                fvim "$arg*"
+            fi
+        fi
+    done
+    "$VIM_EXE" "$@"
+}
 
 export TERM=xterm-256color
 
@@ -220,10 +241,10 @@ if [[ $- =~ .*i.* ]]; then bind '"\C-n": "\C-a hh \C-j"'; fi
 [[ -s ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -s ~/enhancd/enhancd.sh ]] && . ~/enhancd/enhancd.sh
 
-if [[ $- =~ i ]] ; then
+if [[ $- =~ i && -z "$ALREADY_SOURCED_BASHRC" ]] ; then
     doge
     date
     fortune
 fi
 
-
+export ALREADY_SOURCED_BASHRC=1
