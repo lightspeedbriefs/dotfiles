@@ -54,6 +54,27 @@ vim() {
     done
     "$VIM_EXE" "$@"
 }
+findf() {
+    local loc=.
+    if [[ $# -ge 2 ]] ; then
+        loc=$1; shift
+    fi
+    'find' "$loc" -type f -name "$@"
+}
+findd() {
+    local loc=.
+    if [[ $# -ge 2 ]] ; then
+        loc=$1; shift
+    fi
+    'find' "$loc" -type d -name "$@"
+}
+finde() {
+    local loc=.
+    if [[ $# -ge 2 ]] ; then
+        loc=$1; shift
+    fi
+    'find' "$loc" -type f -executable -name "$@"
+}
 
 export TERM=xterm-256color
 
