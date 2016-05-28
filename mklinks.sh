@@ -4,7 +4,7 @@ dir=~/dotfiles                              # dotfiles directory
 olddir=~/dotfiles_old                       # old dotfiles backup directory
 plugf=~/.vim/autoload/plug.vim
 # list of files/folders to symlink in homedir
-files="bashrc vimrc gitconfig minttyrc gdbinit"
+files="bashrc vimrc gitconfig minttyrc gdbinit colorgccrc"
 
 ##########
 

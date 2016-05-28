@@ -10,5 +10,7 @@
     co = checkout
     ci = commit
     br = branch
+    du = diff -b
+    ds = diff -b --staged
 [include]
     path = ~/.gitconfig.local
