@@ -354,8 +354,6 @@ let NERDTreeQuitOnOpen = 1
 autocmd VimEnter *
                 \   if !argc()
                 \ |   Startify
-                \ |   NERDTree
-                \ |   wincmd w
                 \ | endif
 
 function! CheckLeftBuffers()

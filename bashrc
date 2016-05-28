@@ -79,7 +79,8 @@ finde() {
 export TERM=xterm-256color
 
 export LD_LIBRARY_PATH=$HOME/lib
-export PATH=$PATH:$HOME/.cargo/bin
+export PATH=/usr/lib/colorgcc/bin:$PATH:$HOME/.cargo/bin
+export CCACHE_PATH=/usr/bin
 export LESS='-JFXRs'
 export PAGER=less
 export EDITOR=vim

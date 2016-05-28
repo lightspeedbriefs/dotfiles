@@ -1,0 +1,4 @@
+g++: /usr/lib64/ccache/g++
+gcc: /usr/lib64/ccache/gcc
+c++: /usr/lib64/ccache/g++
+cc:  /usr/lib64/ccache/cc
