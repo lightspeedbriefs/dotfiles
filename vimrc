@@ -177,7 +177,7 @@ set virtualedit=all
 set hlsearch
 set hidden
 set wildmode=list:longest,full
-set wildignore=*.o,*.so,*.bin,*.pyc
+set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc
 set cursorline
 set clipboard=unnamedplus
 map <F1> :bp<CR>
@@ -202,7 +202,7 @@ nnoremap <leader>sc :execute 'CtrlSF -filetype cc \b' . expand("<cword>") . '\b'
 nnoremap <leader>sx :execute 'CtrlSF -filetype cpp \b' . expand("<cword>") . '\b'<cr>:set filetype=cpp<cr>
 nnoremap <C-Bslash> :CtrlPBuffer<cr>
 
-let g:FindFileIgnore = ['*.o', '*.d']
+let g:FindFileIgnore = ['*.o', '*.d', '*.a', '*.so', '*.pyc']
 let g:ConqueTerm_CloseOnEnd = 1
 " Mark plugin config
 " Mark plugin may be found at http://www.vim.org/scripts/script.php?script_id=2666

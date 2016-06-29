@@ -261,7 +261,7 @@ if [[ $- =~ .*i.* ]]; then bind '"\C-n": "\C-a hh \C-j"'; fi
 
 [[ -s ~/.shell_prompt2.sh ]] && . .shell_prompt2.sh
 [[ -s ~/.fzf.bash ]] && source ~/.fzf.bash
-[[ -s ~/enhancd/enhancd.sh ]] && . ~/enhancd/enhancd.sh
+[[ -s ~/enhancd/init.sh ]] && . ~/enhancd/init.sh
 
 if [[ $- =~ i && -z "$ALREADY_SOURCED_BASHRC" ]] ; then
     doge
