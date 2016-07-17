@@ -180,6 +180,8 @@ set wildmode=list:longest,full
 set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc
 set cursorline
 set clipboard=unnamedplus
+set winwidth=85
+set nowrap
 map <F1> :bp<CR>
 map <F2> :bn<CR>
 map <F3> :b#<CR>
