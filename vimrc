@@ -236,9 +236,6 @@ vmap <leader>q <plug>(QuickScopeToggle)
 " signify config
 let g:signify_vcs_list = [ 'git' ]
 " syntastic config
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 let g:syntastic_cpp_checkers = []
 let g:syntastic_c_checkers = []
 let g:ycm_always_populate_location_list = 1
@@ -297,7 +294,8 @@ let g:airline_powerline_fonts = 1
 "let g:airline_theme='apprentice'
 let g:airline_theme='PaperColor'
 "let g:airline_theme='tomorrow'
-colorscheme PaperColor
+let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
+colorscheme PaperColor 
 "colorscheme apprentice
 "colorscheme Tomorrow-Night
 "hi clear CursorLine " need CursorLine highlighted for ctrlp
