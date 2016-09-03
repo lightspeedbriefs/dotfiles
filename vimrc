@@ -36,6 +36,9 @@ Plug 'junegunn/vim-easy-align'
 
 " Regenerate tags files while you work
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'oepn/vim-easytags'
+" easytags requires vim-misc
+Plug 'xolox/vim-misc'
 
 " Place, toggle, and display marks
 Plug 'kshenoy/vim-signature'
@@ -145,16 +148,18 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'AlessandroYorba/Alduin'
 Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
-Plug 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+Plug 'dracula/vim'
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'baskerville/bubblegum'
 Plug 'romainl/Apprentice'
 Plug 'morhetz/gruvbox'
 Plug 'NLKNguyen/papercolor-theme'
+Plug '0ax1/lxvc'
 Plug 'ryanoasis/vim-devicons'
 Plug 'koron/nyancat-vim'
 Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plug 'kristijanhusak/vim-hybrid-material'
 
 " Insert snippets (engine only)
 Plug 'SirVer/ultisnips'
@@ -178,10 +183,11 @@ set hlsearch
 set hidden
 set wildmode=list:longest,full
 set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc
-set cursorline
 set clipboard=unnamedplus
 set winwidth=85
 set nowrap
+set ttyfast
+set lazyredraw
 map <F1> :bp<CR>
 map <F2> :bn<CR>
 map <F3> :b#<CR>
@@ -217,6 +223,9 @@ let g:multi_cursor_next_key='<C-y>'
 let g:multi_cursor_prev_key='<C-u>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
+" easytags config
+let g:easytags_async = 1
+let g:easytags_syntax_keyword = 'always'
 let [&nu, &rnu] = [&nu+&rnu==0, &nu]
 map <silent> <C-l> :setl <C-R>=&rnu ? "nornu" : "rnu"<CR><CR>
 map <silent> <C-n> :set invhlsearch<CR>
@@ -253,6 +262,7 @@ vmap gx <Plug>(openbrowser-smart-search)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:SuperTabCrMapping = 0
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
@@ -291,13 +301,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
-"let g:airline_theme='apprentice'
 let g:airline_theme='PaperColor'
-"let g:airline_theme='tomorrow'
 let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
-colorscheme PaperColor 
-"colorscheme apprentice
-"colorscheme Tomorrow-Night
+colorscheme PaperColor
 "hi clear CursorLine " need CursorLine highlighted for ctrlp
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline

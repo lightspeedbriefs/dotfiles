@@ -11,10 +11,16 @@
     ci = commit
     br = branch
     du = diff -b
+    dh = diff -b HEAD^!
     ds = diff -b --staged
+    db = diff -b master...HEAD
     rb = rebase
     rbi = rebase -i
+    rbc = rebase --continue
+    rba = rebase --abort
+    cp = cherry-pick
     lg = !"git lg1"
+    lb = log --oneline --decorate --left-right --graph master...HEAD
     lg1 = !"git lg1-specific --all"
     lg2 = !"git lg2-specific --all"
     lg3 = !"git lg3-specific --all"
@@ -23,3 +29,5 @@
     lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
 [include]
     path = ~/.gitconfig.local
+[rebase]
+    autosquash = true
