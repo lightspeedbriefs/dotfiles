@@ -4,7 +4,7 @@ dir=~/dotfiles                              # dotfiles directory
 olddir=~/dotfiles_old                       # old dotfiles backup directory
 plugf=~/.vim/autoload/plug.vim
 # list of files/folders to symlink in homedir
-files="bashrc vimrc gitconfig minttyrc gdbinit colorgccrc"
+files="bashrc vimrc gitconfig minttyrc gdbinit colorgccrc color_coded clang_complete ycm_extra_conf.py"
 
 ##########
 
@@ -17,13 +17,19 @@ echo "done"
 
 # change to the dotfiles directory
 echo -n "Changing to the $dir directory ..."
-cd $dir
+cd "$dir" || exit
 echo "done"
 
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks from the homedir to any files in the ~/dotfiles directory specified in $files
 for file in $files; do
     echo "Moving any existing dotfiles from ~ to $olddir"
-    [[ -s ~/.$file ]] && 'mv' -b ~/.$file ~/dotfiles_old/
+    [[ -s "$HOME/.$file" ]] && 'mv' -b "$HOME/.$file" ~/dotfiles_old/
     echo "Creating symlink to $file in home directory."
-    'ln' -s $dir/$file ~/.$file
+    'ln' -s "$dir/$file" "$HOME/.$file"
 done
+
+'mkdir' -p ~/.config/nvim
+file=~/.config/nvim/init.vim
+[[ -s $file ]] && 'mv' -b $file ~/dotfiles_old/
+echo "Creating symlink to $file in home directory."
+'ln' -s $dir/vimrc $file

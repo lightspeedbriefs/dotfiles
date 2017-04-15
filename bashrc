@@ -31,6 +31,7 @@ alias diff=colordiff
 alias dmesg='dmesg -H'
 alias agc='ag --cc'
 alias agx='ag --cpp'
+alias cgrep='rg --type cpp'
 alias resolvedir='cd $(/bin/pwd)'
 alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
 VIM_EXE=$(which vim 2>/dev/null)
@@ -79,7 +80,8 @@ finde() {
 export TERM=xterm-256color
 
 export LD_LIBRARY_PATH=$HOME/lib
-export PATH=/usr/lib/colorgcc/bin:$PATH:$HOME/.cargo/bin
+export PATH=/usr/lib/colorgcc/bin:$HOME/.cargo/bin:$PATH
+export PYTHONPATH=/usr/lib64/python2.7/site-packages/lldb
 export CCACHE_PATH=/usr/bin
 export LESS='-JFXRs'
 export PAGER=less
@@ -117,10 +119,7 @@ export MAN_POSIXLY_CORRECT=1
 #export JAVA_HOME=/usr/java/latest
 
 findctor() {
-    egrep -Inr -- "(make_shared\s*<\s*|new\s+|make_unique\s*<\s*)[_a-zA-Z0-9:]*$1\s*(<.*)?>?\s*\(" $2
-}
-cgrep() {
-    egrep -Irn --color --include "*.cpp" --include "*.h" --include="*.hpp" -- "$@" | egrep -v "(cpp|h|hpp):[[:digit:]]+:[[:space:]]*//" | egrep --color -- "$1"
+    rg --type cpp "(make_shared\s*<\s*|new\s+(\(\s*&?\s*[a-zA-Z_][a-zA-Z0-9_]*\s*\)\s+)?|make_unique\s*<\s*)[_a-zA-Z0-9:]*$1\s*(<.*)?>?\s*\(" $2
 }
 viml() {
     if [[ $# -ne 2 ]] ; then
@@ -265,8 +264,9 @@ if [[ $- =~ .*i.* ]]; then bind '"\C-n": "\C-a hh \C-j"'; fi
 
 if [[ $- =~ i && -z "$ALREADY_SOURCED_BASHRC" ]] ; then
     doge
+    linux_logo -u -a
+    fortune -s | cowsay
     date
-    fortune
 fi
 
 export ALREADY_SOURCED_BASHRC=1
