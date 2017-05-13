@@ -24,8 +24,8 @@ alias grep='grep -I --color'
 alias igrep='grep -i'
 alias rgrep='grep -rn'
 alias egrep='egrep --color'
-alias vi=vim
-alias vimt='vim -t'
+alias vi=nvim
+alias vimt='nvim -t'
 alias g++='g++ -std=c++14 -Werror -Wall -Wextra'
 alias diff=colordiff
 alias dmesg='dmesg -H'
@@ -34,21 +34,22 @@ alias agx='ag --cpp'
 alias cgrep='rg --type cpp'
 alias resolvedir='cd $(/bin/pwd)'
 alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
-VIM_EXE=$(which vim 2>/dev/null)
+VIM_EXE=$(which nvim 2>/dev/null)
 if [[ ! -x "$VIM_EXE" ]] ; then
-    VIM_EXE=$(which vi)
+    VIM_EXE=$(which vim)
 fi
 export VIM_EXE
 fvim() {
     if [[ $# -ge 1 ]] ; then
-        local fpat="-name $1"
+        local fpat="-g $1"
     fi
-    'find' . -maxdepth 1 -type f $fpat -exec 'grep' -Iq . {} \; -and -print | 'fpp'
+    'rg' --maxdepth 1 -l $fpat -e . | 'fpp'
 }
 vim() {
     for arg in "$@" ; do
         if [[ -s "$arg" ]] ; then
-            if ! 'grep' -Iq . "$arg" ; then
+            # Check if we're trying to edit a binary file
+            if ! 'rg' -q -e . -- "$arg" ; then
                 fvim "$arg*"
             fi
         fi
@@ -92,8 +93,10 @@ export HISTTIMEFORMAT="[%Y-%m-%d %H:%M:%S] "
 export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export AUTOJUMP_AUTOCOMPLETE_CMDS='cp vim'
-export ENHANCD_FILTER=fzf:percol:pick:selecta:fpp
+export ENHANCD_FILTER=fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 if [[ -n "$DISPLAY" ]] ; then
     export BROWSER=firefox
 fi
@@ -160,24 +163,43 @@ GRC=`which grc`
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]
 then
     alias colourify="$GRC -es --colour=auto"
+    alias blkid='colourify blkid'
     alias configure='colourify ./configure'
+    alias df='colourify df'
     alias diff='colourify diff'
+    alias docker='colourify docker'
+    alias docker-machine='colourify docker-machine'
+    alias du='colourify du'
+    alias env='colourify env'
+    alias free='colourify free'
+    alias fdisk='colourify fdisk'
+    alias findmnt='colourify findmnt'
     alias make='colourify make'
     #alias gcc='colourify gcc'
     #alias g++='colourify g++'
+    alias id='colourify id'
+    alias ip='colourify ip'
+    alias iptables='colourify iptables'
     alias as='colourify as'
     alias gas='colourify gas'
     alias ld='colourify ld'
+    #alias ls='colourify ls'
+    alias lsof='colourify lsof'
+    alias lsblk='colourify lsblk'
+    alias lspci='colourify lspci'
     alias netstat='colourify netstat'
     alias ping='colourify ping'
-    alias traceroute='colourify /usr/sbin/traceroute'
+    alias traceroute='colourify traceroute'
+    alias traceroute6='colourify traceroute6'
     alias head='colourify head'
     alias tail='colourify tail'
     alias dig='colourify dig'
     alias mount='colourify mount'
     alias ps='colourify ps'
     alias mtr='colourify mtr'
-    alias df='colourify df'
+    alias semanage='colourify semanage'
+    alias getsebool='colourify setsebool'
+    alias ifconfig='colourify ifconfig'
 fi
 
 # Automatically add completion for all aliases to commands having completion functions
@@ -261,6 +283,8 @@ if [[ $- =~ .*i.* ]]; then bind '"\C-n": "\C-a hh \C-j"'; fi
 [[ -s ~/.shell_prompt2.sh ]] && . .shell_prompt2.sh
 [[ -s ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -s ~/enhancd/init.sh ]] && . ~/enhancd/init.sh
+nixsh=~/.nix-profile/etc/profile.d/nix.sh
+[[ -s $nixsh ]] && . $nixsh
 
 if [[ $- =~ i && -z "$ALREADY_SOURCED_BASHRC" ]] ; then
     doge

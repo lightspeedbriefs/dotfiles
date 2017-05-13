@@ -127,6 +127,9 @@ Plug 'keith/investigate.vim'
 " Open file:line:col
 Plug 'kopischke/vim-fetch'
 
+" Nix syntax
+Plug 'LnL7/vim-nix'
+
 " Run google test framework unit tests within vim
 Plug 'alepez/vim-gtest'
 
@@ -557,7 +560,7 @@ let g:ale_cpp_gcc_options = '-std=c++14 -Wall -Wextra'
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=passedByValue'
 
 " ctrlp config
-let g:ctrlp_user_command = 'find %s -regextype egrep -type f -regex ".*\.(cpp|h|hpp)"'
+let g:ctrlp_user_command = 'rg -tcpp --files %s'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
 let g:startify_change_to_dir = 0
