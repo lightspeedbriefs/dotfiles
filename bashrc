@@ -81,7 +81,8 @@ finde() {
 export TERM=xterm-256color
 
 export LD_LIBRARY_PATH=$HOME/lib
-export PATH=/usr/lib/colorgcc/bin:$HOME/.cargo/bin:$PATH
+#export PATH=/usr/lib/colorgcc/bin:$HOME/.cargo/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 export PYTHONPATH=/usr/lib64/python2.7/site-packages/lldb
 export CCACHE_PATH=/usr/bin
 export LESS='-JFXRs'

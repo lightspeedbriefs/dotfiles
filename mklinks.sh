@@ -33,3 +33,11 @@ file=~/.config/nvim/init.vim
 [[ -s $file ]] && 'mv' -b $file ~/dotfiles_old/
 echo "Creating symlink to $file in home directory."
 'ln' -s $dir/vimrc $file
+
+file=~/.gdbinit
+[[ -s $file ]] && 'mv' -b $file ~/dotfiles_old/
+echo "Creating symlink to $file in home directory."
+'curl' -fLo $file https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit
+
+file=~/.gdbinit.d/colors.gdb
+'curl' -fLo $file --create-dirs https://raw.githubusercontent.com/RAttab/dotfiles/master/colors.gdb

@@ -554,10 +554,17 @@ let g:airline_theme= 'onedark'
 let g:neomake_cpp_clang_args = ["-std=c++14", "-Wall", "-Wextra"]
 
 " ALE config
-let g:ale_cpp_clangtidy_options = '-std=c++14 -Wall -Wextra'
 let g:ale_cpp_clang_options = '-std=c++14 -Wall -Wextra'
 let g:ale_cpp_gcc_options = '-std=c++14 -Wall -Wextra'
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=passedByValue'
+
+" Disable the checks that ALE runs in favor of those from .clang-tidy
+let g:ale_cpp_clangtidy_checks = []
+
+" Only enable cppcheck and clang-tidy, as they utilize compile_commands.json
+let g:ale_linters = {
+\   'cpp': ['clangtidy', 'cppcheck'],
+\}
 
 " ctrlp config
 let g:ctrlp_user_command = 'rg -tcpp --files %s'
