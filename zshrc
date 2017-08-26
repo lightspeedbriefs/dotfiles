@@ -7,7 +7,7 @@ if (( $+commands[nvim] )) ; then
 else
     alias vi=vim
 fi
-cxx_opts='-std=c++14 -pthread -ggdb3 -Og -flto -Werror -Wall -Wextra -Wsuggest-override -Wsugguest-final-types -Wsugggest-final-methods -Wdisabled-optimization'
+cxx_opts='-std=c++14 -pthread -ggdb3 -Og -flto -Werror -Wall -Wextra -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wdisabled-optimization'
 c_opts='-std=c11 -ggdb3 -Og -flto -Werror -Wall -Wextra'
 alias g++="g++ $cxx_opts"
 alias gcc="gcc $c_opts"
