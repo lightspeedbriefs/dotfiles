@@ -92,6 +92,7 @@ Plug 'mhinz/vim-grepper'
 
 " Incremental search highlighting of all hits
 Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-easymotion.vim'
 
 " Commenting plugins
 Plug 'scrooloose/nerdcommenter'
@@ -177,8 +178,8 @@ if has('nvim')
     "Plug 'roxma/clang_complete'
 
     " This plugin has support for neovim out of the box, but it claims
-    " to be in an "alpha" state
-    Plug 'arakashic/chromatica.nvim'
+    " to be in an "alpha" state, and it is indeed somewhat buggy
+    " Plug 'arakashic/chromatica.nvim'
 
     " LLDB debugging
     Plug 'critiqjo/lldb.nvim'
@@ -316,8 +317,8 @@ map <F12> :GundoToggle<CR>
 " An alternative fix is to use bufkill (last commit Aug 16)
 nnoremap <leader>bd :bp<cr>:bd #<cr>
 
-nnoremap <leader>ac :Ack --cc "\b<cword>\b"<cr>
-nnoremap <leader>ax :Ack --cpp "\b<cword>\b"<cr>
+nnoremap <leader>ac :Ack -tc "\b<cword>\b"<cr>
+nnoremap <leader>ax :Ack -tcpp "\b<cword>\b"<cr>
 nnoremap <leader>sc :execute 'CtrlSF -filetype cc \b' . expand("<cword>") . '\b'<cr>:set filetype=c<cr>
 nnoremap <leader>sx :execute 'CtrlSF -filetype cpp \b' . expand("<cword>") . '\b'<cr>:set filetype=cpp<cr>
 nnoremap <C-Bslash> :CtrlPBuffer<cr>
@@ -590,5 +591,9 @@ endif
 " ctrlsf config
 let g:ctrlsf_winsize = '35%'
 let g:ctrlsf_regex_pattern = 1
+
+" incsearch-easymotion config
+map z/ <Plug>(incsearch-easymotion-/)
+map z? <Plug>(incsearch-easymotion-?)
 
 " }}}
