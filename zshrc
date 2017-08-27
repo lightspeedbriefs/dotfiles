@@ -1,5 +1,15 @@
-alias ls='ls --color -F'
-alias ll='ls -lh'
+if (( $+commands[exa] )) ; then
+    alias exa='exa -F'
+    alias ls='exa -F'
+    alias ll='exa -lh --git'
+else
+    alias ls='ls --color -F'
+    if (( $+commands[grc] )) ; then
+        alias ll='grc -es --colour=auto ls -lhF --color'
+    else
+        alias ll='ls -lh'
+    fi
+fi
 alias cx='chmod +x'
 alias egrep='egrep --color'
 if (( $+commands[nvim] )) ; then
@@ -36,7 +46,6 @@ alias cgrep='rg --type cpp'
 alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
 if (( $+commands[grc] )) ; then
     alias colourify='grc -es --colour=auto'
-    alias ll='grc -es --colour=auto ls -lhF --color'
     alias df='grc -es --colour=auto df -h'
     alias free='grc -es --colour=auto free -h'
     cmds=(ant as blkid configure cvs dig docker docker-machine du env fdisk findmnt gas getfacl getsebool \
@@ -135,6 +144,8 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
     zplug "b4b4r07/enhancd", use:init.sh
 
     zplug "facebook/pathpicker", as:command, use:fpp
+
+    zplug "supercrabtree/k"
 
     zplug "justjanne/powerline-go", from:gh-r, as:command, rename-to:powerline-go
 
