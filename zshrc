@@ -28,6 +28,9 @@ if (( $+commands[colordiff] )) ; then
 elif (( $+commands[grc] )) ; then
     alias diff='grc -es --colour=auto diff'
 fi
+if (( $+commands[pygmentize] )) ; then
+    alias ccat='pygmentize -g'
+fi
 alias dmesg='dmesg -H'
 alias cgrep='rg --type cpp'
 alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
@@ -56,6 +59,7 @@ export SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r?$reset_color (Yes
 
 autoload -U compinit && compinit
 
+setopt   combining_chars
 setopt   complete_aliases
 setopt   complete_in_word
 setopt   correct

@@ -15,6 +15,11 @@ export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export ENHANCD_FILTER=fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
+if (( $+commands[pygmentize] )) ; then
+    export LESSOPEN="|pygmentize -O style=monokai -f 16m %s"
+elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
+    export LESSOPEN="|src-hilite-lesspipe.sh %s"
+fi
 if (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
