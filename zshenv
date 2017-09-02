@@ -5,7 +5,11 @@ export PYTHONPATH=/usr/lib64/python2.7/site-packages/lldb
 export CCACHE_PATH=/usr/bin
 export LESS='-JFXRs'
 export PAGER=less
-export EDITOR=vim
+if (( $+commands[nvim] )) ; then
+    export EDITOR=nvim
+elif (( $+commands[vim] )) ; then
+    export EDITOR=vim
+fi
 export HISTFILE=~/.zsh_history
 export HISTFILESIZE=40000
 export HISTSIZE=40000
@@ -22,6 +26,9 @@ elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
 fi
 if (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+elif (( $+commands[ag] )) ; then
+    export FZF_DEFAULT_COMMAND='ag -g ""'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 export HH_CONFIG=hicolor

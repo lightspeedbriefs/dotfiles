@@ -17,22 +17,26 @@ if (( $+commands[nvim] )) ; then
 else
     alias vi=vim
 fi
-cxx_opts='-std=c++14 -pthread -ggdb3 -Og -flto -Werror -Wall -Wextra -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wdisabled-optimization'
-c_opts='-std=c11 -ggdb3 -Og -flto -Werror -Wall -Wextra'
-alias g++="g++ $cxx_opts"
+gpp_opts='-flto=$(nproc) -flto-odr-type-merging -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods'
+cxx_opts='-std=c++14 -pthread -ggdb3 -Og -Werror -Wall -Wextra -Wdisabled-optimization'
+c_opts='-std=c11 -ggdb3 -Og -Werror -Wall -Wextra -flto'
+alias g++="g++ $cxx_opts $gpp_opts"
 alias gcc="gcc $c_opts"
-alias clang++="clang++ $cxx_opts"
+alias clang++="clang++ -flto $cxx_opts"
 alias clang="clang $c_opts"
-unset cxx_opts c_opts
+unset cxx_opts c_opts gpp_opts
 if (( $+commands[rg] )) ; then
     alias rf='rg --files -g'
     alias findf='rg --files -g'
-    alias findd='find . -type d -name'
     alias cgrep='rg -tcpp'
+elif (( $+commands[ag] )) ; then
+    alias rf='ag -g ""'
+    alias findf='ag -g ""'
+    alias cgrep='ag --cpp'
 else
     alias findf='find . -type f -name'
-    alias findd='find . -type d -name'
 fi
+alias findd='find . -type d -name'
 if (( $+commands[colordiff] )) ; then
     alias diff=colordiff
 elif (( $+commands[grc] )) ; then
@@ -48,8 +52,10 @@ if (( $+commands[grc] )) ; then
     alias colourify='grc -es --colour=auto'
     alias df='grc -es --colour=auto df -h'
     alias free='grc -es --colour=auto free -h'
+    alias gmake='grc -es --colour=auto gmake -j$(nproc)'
+    alias make='grc -es --colour=auto make -j$(nproc)'
     cmds=(ant as blkid configure cvs dig docker docker-machine du env fdisk findmnt gas getfacl getsebool \
-        gmake gold id ifconfig ip iptables lsattr lsblk lsmod lsof lspci mount mtr netstat nmap ping ps semanage \
+        gold id ifconfig ip iptables lsattr lsblk lsmod lsof lspci mount mtr netstat nmap ping ps semanage \
         tcpdump traceroute traceroute6 ulimit uptime vmstat)
     # Already has color: diff, gcc, g++, systemctl
     # Interactive: dnf
@@ -59,6 +65,14 @@ if (( $+commands[grc] )) ; then
         fi
     done
     unset cmds cmd
+else
+    if (( $+commands[colormake] )) ; then
+        alias gmake='colormake -j$(nproc)'
+        alias make='colormake -j$(nproc)'
+    else
+        alias gmake='gmake -j$(nproc)'
+        alias make='make -j$(nproc)'
+    fi
 fi
 alias -s git='git clone'
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=aunpack
@@ -132,8 +146,6 @@ bindkey '\C-x\C-e' edit-command-line
 
 fpath=(~/.zsh_completions $fpath)
 
-# hstr config
-export HH_CONFIG=hicolor        # get more colors
 #bindkey -s "\C-r" "\eqhh\n"     # bind hh to Ctrl-r (for Vi mode check doc)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -149,21 +161,23 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug "justjanne/powerline-go", from:gh-r, as:command, rename-to:powerline-go
 
-    function powerline_precmd() {
-        PS1="$(powerline-go -error $? -shell zsh)"
-    }
+    if (( $+commands[powerline-go] )) ; then
+        function powerline_precmd() {
+            PS1="$(powerline-go -error $? -shell zsh)"
+        }
 
-    function install_powerline_precmd() {
-      for s in "${precmd_functions[@]}"; do
-        if [ "$s" = "powerline_precmd" ]; then
-          return
+        function install_powerline_precmd() {
+          for s in "${precmd_functions[@]}"; do
+            if [ "$s" = "powerline_precmd" ]; then
+              return
+            fi
+          done
+          precmd_functions+=(powerline_precmd)
+        }
+
+        if [ "$TERM" != "linux" ]; then
+            install_powerline_precmd
         fi
-      done
-      precmd_functions+=(powerline_precmd)
-    }
-
-    if [ "$TERM" != "linux" ]; then
-        install_powerline_precmd
     fi
 
     zplug "zsh-users/zsh-autosuggestions"
