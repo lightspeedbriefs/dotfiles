@@ -2,7 +2,8 @@
 
 dir=~/dotfiles                              # dotfiles directory
 olddir=~/dotfiles_old                       # old dotfiles backup directory
-plugf=~/.vim/autoload/plug.vim
+nvim_plug="$HOME/.local/share/nvim/site/autoload/plug.vim"
+vim_plug_dir="$HOME/.vim/autoload"
 # list of files/folders to symlink in homedir
 files="bashrc vimrc gitconfig minttyrc gdbinit colorgccrc color_coded clang_complete ycm_extra_conf.py zshenv zshrc"
 
@@ -13,7 +14,9 @@ echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
 'mkdir' -p $olddir
 echo "done"
 
-[[ -e $plugf ]] || 'curl' -fLo $plugf --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+'curl' -fLo "$nvim_plug" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+'mkdir' -p "$vim_plug_dir"
+'cp' "$nvim_plug" "$vim_plug_dir"
 
 # change to the dotfiles directory
 echo -n "Changing to the $dir directory ..."

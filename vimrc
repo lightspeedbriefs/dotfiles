@@ -2,13 +2,13 @@ if has('nvim')
     if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
       silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall --sync | source ~/.config/nvim/init.vim
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 else
     if empty(glob('~/.vim/autoload/plug.vim'))
       silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall --sync | source ~/.vimrc
+      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 endif
 
@@ -288,8 +288,10 @@ endif
 if has('nvim')
     set inccommand=split
 endif
-set termguicolors
-colorscheme onedark
+if has('termguicolors')
+    set termguicolors
+endif
+silent! colorscheme onedark
 "hi clear CursorLine " need CursorLine highlighted for ctrlp
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline
