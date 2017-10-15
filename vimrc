@@ -33,25 +33,25 @@ Plug 'mhinz/vim-startify'
 Plug 'simnalamburt/vim-mundo'
 Plug 'mbbill/undotree'
 
-" Buffer, file, tab, workspace, bookmark fuzzy search
-" Looks like development ceased in Feb '16
-Plug 'vim-ctrlspace/vim-ctrlspace'
-
 " Fuzzy file, buffer, mru, tag, etc. finder
 Plug 'ctrlpvim/ctrlp.vim'
 " Last updated Sep '15
 Plug 'sgur/ctrlp-extensions.vim'
 
+Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
+
+" Similar to command-t and ctrlp
+" Less featureful, but worth keeping an eye on
+"Plug 'srstevenson/vim-picker'
+
 " Align statements such as assignments
 " Last updated Mar '16
 Plug 'junegunn/vim-easy-align'
 
-" Regenerate tags files while you work
-Plug 'ludovicchabant/vim-gutentags'
-" easytags has not seen any updates since Jul '15
-" Plug 'oepn/vim-easytags'
-" easytags requires vim-misc
-" Plug 'xolox/vim-misc'
+if executable('ctags')
+    " Regenerate tags files while you work
+    Plug 'ludovicchabant/vim-gutentags'
+endif
 
 " Place, toggle, and display marks
 Plug 'kshenoy/vim-signature'
@@ -80,14 +80,10 @@ Plug 'airblade/vim-gitgutter'
 " Git commit browser
 Plug 'junegunn/gv.vim'
 
-" silver searcher plugin
-" Last commit was Jul '16
-Plug 'mileszs/ack.vim'
-
-" ack.vim alternative
+" Superior alternatives to ack.vim
+" These plugins offer extremely similar functionality,
+" although ctrlsf seems more featureful
 Plug 'dyng/ctrlsf.vim'
-
-" grepper
 Plug 'mhinz/vim-grepper'
 
 " Incremental search highlighting of all hits
@@ -143,6 +139,11 @@ Plug 'unblevable/quick-scope'
 " Generate shortcuts using 's'
 Plug 'justinmk/vim-sneak'
 
+" Highlight several words in different colors simultaneously
+Plug 'mihais/vim-mark'
+
+Plug 'EinfachToll/DidYouMean'
+
 " Switch between source and header (alternatives to this include a.vim and altr)
 Plug 'derekwyatt/vim-fswitch'
 
@@ -182,7 +183,9 @@ if has('nvim')
     " Plug 'arakashic/chromatica.nvim'
 
     " LLDB debugging
-    Plug 'critiqjo/lldb.nvim'
+    if executable('lldb')
+        Plug 'critiqjo/lldb.nvim'
+    endif
 else
     "Plug 'maralla/completor.vim'
 
@@ -194,9 +197,11 @@ endif
 
 " Fork of YCM with better completion for function parameters
 " See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
-Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer --racer-completer' }
+if executable('cmake')
+    Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
+    Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+endif
 
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 " }}}
 
 " {{{ Themes
@@ -300,50 +305,44 @@ highlight SpellRare ctermbg=none cterm=underline
 " }}}
 
 " {{{ Mappings
-map <F1> :bp<CR>
-map <F2> :bn<CR>
-map <F3> :b#<CR>
-map <F4> :FSHere<CR>
-map <F5> :YcmCompleter GoToInclude<CR>
-map <F6> :NERDTreeToggle<CR>
-map <F7> :UndotreeToggle<CR>
+noremap <silent> <F1> :bp<CR>
+noremap <silent> <F2> :bn<CR>
+noremap <silent> <F3> :b#<CR>
+noremap <silent> <F4> :FSHere<CR>
+noremap <silent> <F6> :NERDTreeToggle<CR>
+noremap <silent> <F7> :UndotreeToggle<CR>
 set pastetoggle=<F8>
-" nmap <F9> <Plug>(altr-forward)
-" nmap <S-F9> <Plug>(altr-back)
-map <F10> :lop<CR>
-map <S-F10> :lcl<CR>
-map <F11> :TagbarToggle<CR>
-map <F12> :GundoToggle<CR>
+noremap <silent> <F11> :TagbarToggle<CR>
+noremap <silent> <F12> :GundoToggle<CR>
 
 " Workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
 " An alternative fix is to use bufkill (last commit Aug 16)
-nnoremap <leader>bd :bp<cr>:bd #<cr>
+nnoremap <silent> <leader>bd :bp<cr>:bd #<cr>
 
-nnoremap <leader>ac :Ack -tc "\b<cword>\b"<cr>
-nnoremap <leader>ax :Ack -tcpp "\b<cword>\b"<cr>
-nnoremap <leader>sc :execute 'CtrlSF -filetype cc \b' . expand("<cword>") . '\b'<cr>:set filetype=c<cr>
-nnoremap <leader>sx :execute 'CtrlSF -filetype cpp \b' . expand("<cword>") . '\b'<cr>:set filetype=cpp<cr>
-nnoremap <C-Bslash> :CtrlPBuffer<cr>
+nnoremap <silent> <C-Bslash> :CtrlPBuffer<cr>
 
-imap <silent> <C-n> :set invhlsearch<CR>
-nmap <silent> <C-n> :set invhlsearch<CR>
-map <silent> <C-m> :set invspell<CR>
-map <silent> <C-h> :MarkClear<CR>
+inoremap <silent> <C-n> :set invhlsearch<CR>
+nnoremap <silent> <C-n> :set invhlsearch<CR>
+noremap <silent> <C-m> :set invspell<CR>
+noremap <silent> <C-h> :MarkClear<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Up> :wincmd k<CR>
 nnoremap <silent> <C-Down> :wincmd j<CR>
-map <silent> <leader>t :YcmCompleter GetType<CR>
-map <silent> <leader>d :YcmCompleter GetDoc<CR>
 
-map <silent> <C-l> :setl <C-R>=&rnu ? "nornu" : "rnu"<CR><CR>
+noremap <silent> <C-l> :setl <C-R>=&rnu ? "nornu" : "rnu"<CR><CR>
 
 nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 
-nmap <leader>q <plug>(QuickScopeToggle)
-vmap <leader>q <plug>(QuickScopeToggle)
+nmap <leader>q <Plug>(QuickScopeToggle)
+vmap <leader>q <Plug>(QuickScopeToggle)
 
-au FileType c,cpp  nmap gd <Plug>(clang_complete_goto_declaration)
+" Source code navigation
+"au FileType c,cpp  nmap gd <Plug>(clang_complete_goto_declaration)
+nnoremap <silent> gd :YcmCompleter GoToDeclaration<CR>
+nnoremap <silent> gi :YcmCompleter GoToInclude<CR>
+noremap <silent> gt :YcmCompleter GetType<CR>
+noremap <silent> gk :YcmCompleter GetDoc<CR>
 
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
@@ -351,36 +350,28 @@ vmap gx <Plug>(openbrowser-smart-search)
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-nmap <silent> <leader>n <Plug>(ale_previous_wrap)
-nmap <silent> <leader>p <Plug>(ale_next_wrap)
+nmap gp <Plug>(ale_previous_wrap)
+nmap gn <Plug>(ale_next_wrap)
 
 " Switch to the file and load it into the current window
-nmap <silent> <Leader>of :FSHere<cr>
+nnoremap <silent> <Leader>of :FSHere<cr>
 " Switch to the file and load it into the window on the right
-nmap <silent> <Leader>ol :FSRight<cr>
+nnoremap <silent> <Leader>ol :FSRight<cr>
 " Switch to the file and load it into a new window split on the right
-nmap <silent> <Leader>oL :FSSplitRight<cr>
+nnoremap <silent> <Leader>oL :FSSplitRight<cr>
 " Switch to the file and load it into the window on the left
-nmap <silent> <Leader>oh :FSLeft<cr>
+nnoremap <silent> <Leader>oh :FSLeft<cr>
 " Switch to the file and load it into a new window split on the left
-nmap <silent> <Leader>oH :FSSplitLeft<cr>
+nnoremap <silent> <Leader>oH :FSSplitLeft<cr>
 " Switch to the file and load it into the window above
-nmap <silent> <Leader>ok :FSAbove<cr>
+nnoremap <silent> <Leader>ok :FSAbove<cr>
 " Switch to the file and load it into a new window split above
-nmap <silent> <Leader>oK :FSSplitAbove<cr>
+nnoremap <silent> <Leader>oK :FSSplitAbove<cr>
 " Switch to the file and load it into the window below
-nmap <silent> <Leader>oj :FSBelow<cr>
+nnoremap <silent> <Leader>oj :FSBelow<cr>
 " Switch to the file and load it into a new window split below
-nmap <silent> <Leader>oJ :FSSplitBelow<cr>
+nnoremap <silent> <Leader>oJ :FSSplitBelow<cr>
 
-"nmap     <C-F>f <Plug>CtrlSFPrompt
-"vmap     <C-F>f <Plug>CtrlSFVwordPath
-"vmap     <C-F>F <Plug>CtrlSFVwordExec
-"nmap     <C-F>n <Plug>CtrlSFCwordPath
-"nmap     <C-F>p <Plug>CtrlSFPwordPath
-"nnoremap <C-F>o :CtrlSFOpen<CR>
-"nnoremap <C-F>t :CtrlSFToggle<CR>
-"inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " }}}
 
 " {{{ autocmds
@@ -466,9 +457,6 @@ autocmd FileType startify setlocal buftype=
 " }}}
 
 " {{{ Plugin config
-" FindFile config
-" FindFile may be found at http://www.vim.org/scripts/script.php?script_id=1899
-let g:FindFileIgnore = ['*.o', '*.d', '*.a', '*.so', '*.pyc']
 
 " Mark config
 " Mark may be found at http://www.vim.org/scripts/script.php?script_id=2666
@@ -570,29 +558,55 @@ let g:ale_linters = {
 \}
 
 " ctrlp config
-let g:ctrlp_user_command = 'rg -tcpp --files %s'
+let g:ctrlp_user_command = ['.git', 'git ls-files %s', 'rg --files %s']
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
 let g:startify_change_to_dir = 0
 
-" tagbar config
-let g:tagbar_show_linenumbers = -1
+" command-t config
+map <C-space> <Plug>(CommandT)
+map <C-s>l <Plug>(CommandTLine)
+map <C-s>b <Plug>(CommandTBuffer)
+map <C-s>c <Plug>(CommandTCommand)
+map <C-s>h <Plug>(CommandTHistory)
+map <C-s>t <Plug>(CommandTTag)
+map <C-s>j <Plug>(CommandTJump)
+let g:CommandTTraverseSCM = 'dir'
+let g:CommandTGitScanSubmodules = 1
+let g:CommandTIgnoreCase = 1
+let g:CommandTFileScanner = 'git'
 
 " NERDTree config
 let NERDTreeIgnore = ['\.o$', '\.a$', '\.d$', '\.so$', '\.pyc$', '\.bin$', '\~$']
 let NERDTreeWinSize = 40
 let NERDTreeQuitOnOpen = 1
 
-" ack/silver searcher config
+" ripgrep/silver searcher config
 if executable('rg')
   let g:ackprg = 'rg --vimgrep'
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
 elseif executable('ag')
   let g:ackgrp = 'ag --vimgrep'
+  set grepprg=ag\ --vimgrep
+  set grepformat=%f:%l:%c:%m
 endif
 
 " ctrlsf config
-let g:ctrlsf_winsize = '35%'
+nmap gr <Plug>CtrlSFCwordPath
+nmap gb <Plug>CtrlSFCCwordPath
+xmap gr <Plug>CtrlSFVwordPath
 let g:ctrlsf_regex_pattern = 1
+let g:ctrlsf_default_root = 'project+wf'
+let g:ctrlsf_default_view_mode = 'compact'
+
+" grepper config
+nmap gs <Plug>(GrepperOperator)
+xmap gs <Plug>(GrepperOperator)
+let g:grepper = {}
+let g:grepper.tools = ['rg', 'git', 'ag', 'grep']
+let g:grepper.dir = 'repo,cwd'
+let g:grepper.next_tool = '<C-f>'
 
 " incsearch-easymotion config
 map z/ <Plug>(incsearch-easymotion-/)

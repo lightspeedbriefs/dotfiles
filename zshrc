@@ -42,7 +42,9 @@ if (( $+commands[colordiff] )) ; then
 elif (( $+commands[grc] )) ; then
     alias diff='grc -es --colour=auto diff'
 fi
-if (( $+commands[pygmentize] )) ; then
+if (( $+commands[rougify] )) ; then
+    alias ccat='rougify -t base16.monokai'
+elif (( $+commands[pygmentize] )) ; then
     alias ccat='pygmentize -g'
 fi
 alias dmesg='dmesg -H'
@@ -144,8 +146,6 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
 
-fpath=(~/.zsh_completions $fpath)
-
 #bindkey -s "\C-r" "\eqhh\n"     # bind hh to Ctrl-r (for Vi mode check doc)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -155,11 +155,15 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug "b4b4r07/enhancd", use:init.sh
 
+    zplug "BurntSushi/ripgrep", use:complete
+
     zplug "facebook/pathpicker", as:command, use:fpp
 
     zplug "supercrabtree/k"
 
     zplug "justjanne/powerline-go", from:gh-r, as:command, rename-to:powerline-go
+
+    zplug "lib/termsupport", from:oh-my-zsh
 
     if (( $+commands[powerline-go] )) ; then
         function powerline_precmd() {

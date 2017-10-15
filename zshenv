@@ -7,8 +7,10 @@ export LESS='-JFXRs'
 export PAGER=less
 if (( $+commands[nvim] )) ; then
     export EDITOR=nvim
+    export VISUAL=nvim
 elif (( $+commands[vim] )) ; then
     export EDITOR=vim
+    export VISUAL=vim
 fi
 export HISTFILE=~/.zsh_history
 export HISTFILESIZE=40000
@@ -23,6 +25,8 @@ if (( $+commands[pygmentize] )) ; then
     export LESSOPEN="|pygmentize -O style=monokai -f 16m %s"
 elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
     export LESSOPEN="|src-hilite-lesspipe.sh %s"
+elif (( $+commands[rougify] )) ; then
+    export LESSOPEN="|rougify -t base16.monokai %s"
 fi
 if (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
