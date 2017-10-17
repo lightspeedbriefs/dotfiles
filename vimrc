@@ -38,7 +38,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 " Last updated Sep '15
 Plug 'sgur/ctrlp-extensions.vim'
 
-Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
+if executable('ruby') && executable('make') && executable('cc')
+    Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
+endif
 
 " Similar to command-t and ctrlp
 " Less featureful, but worth keeping an eye on
@@ -99,8 +101,16 @@ Plug 'tomtom/tcomment_vim'
 Plug 'junegunn/vim-peekaboo'
 
 " Highlight different words at the same time, and navigate through the highlighted
-" words just like you would navigate through the results of a search
+" words just like you would navigate through the results of a search.  This is
+" very similar in functionality to vim-mark
 Plug 'lfv89/vim-interestingwords'
+
+" Display how many search results there were and which number the cursor is
+" currently on.
+Plug 'google/vim-searchindex'
+
+" Pulse to indicate where the next search word is
+Plug 'inside/vim-search-pulse'
 
 " Position the cursor to any place inside pairs objects such as () and just type vv
 " to select the text within the pairs
@@ -139,9 +149,8 @@ Plug 'unblevable/quick-scope'
 " Generate shortcuts using 's'
 Plug 'justinmk/vim-sneak'
 
-" Highlight several words in different colors simultaneously
-Plug 'mihais/vim-mark'
-
+" When you tell vim to open a file that doesn't exist, but a similarly named
+" file exists, ask if that's what you meant to open
 Plug 'EinfachToll/DidYouMean'
 
 " Switch between source and header (alternatives to this include a.vim and altr)
@@ -193,12 +202,14 @@ else
     Plug 'jeaye/color_coded', { 'do': 'cmake . && make -j$(nproc) && make install' }
 endif
 
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --racer-completer' }
+if executable('cmake') && executable('python')
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
+    " This needs to go *after* ultisnips in vimrc
+    Plug 'tenfyzhong/CompleteParameter.vim'
 
-" Fork of YCM with better completion for function parameters
-" See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
-if executable('cmake')
-    Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
+    " Fork of YCM with better completion for function parameters
+    " See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
+    "Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
     Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 endif
 
@@ -267,7 +278,6 @@ set matchpairs+=<:>
 set nowrap
 set number
 set path+=/usr/local/include
-" set runtimepath^=~/.vim/bundle/ctrlp.vim
 set shiftwidth=4
 set showmatch
 set smartindent
@@ -278,7 +288,7 @@ set t_ZR=[23m
 set tabstop=4
 set title
 set titlestring=[%{hostname()}]\ vim(%{expand(\"%\")})\ %h%r%m
-set undodir=~/.vim/undodir
+set icon
 set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number of lines to save for undo on a buffer reload
@@ -292,6 +302,10 @@ if has('conceal')
 endif
 if has('nvim')
     set inccommand=split
+else
+    set undodir=~/.vim/undodir
+    set directory=~/.vim/swap
+    set backupdir=~/.vim/backup
 endif
 if has('termguicolors')
     set termguicolors
@@ -341,8 +355,8 @@ vmap <leader>q <Plug>(QuickScopeToggle)
 "au FileType c,cpp  nmap gd <Plug>(clang_complete_goto_declaration)
 nnoremap <silent> gd :YcmCompleter GoToDeclaration<CR>
 nnoremap <silent> gi :YcmCompleter GoToInclude<CR>
-noremap <silent> gt :YcmCompleter GetType<CR>
-noremap <silent> gk :YcmCompleter GetDoc<CR>
+nnoremap <silent> gt :YcmCompleter GetType<CR>
+nnoremap <silent> gk :YcmCompleter GetDoc<CR>
 
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
@@ -371,6 +385,26 @@ nnoremap <silent> <Leader>oK :FSSplitAbove<cr>
 nnoremap <silent> <Leader>oj :FSBelow<cr>
 " Switch to the file and load it into a new window split below
 nnoremap <silent> <Leader>oJ :FSSplitBelow<cr>
+
+smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
+smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+
+nmap <m-d> <Plug>(complete_parameter#overload_down)
+imap <m-d> <Plug>(complete_parameter#overload_down)
+smap <m-d> <Plug>(complete_parameter#overload_down)
+
+nmap <m-u> <Plug>(complete_parameter#overload_up)
+imap <m-u> <Plug>(complete_parameter#overload_up)
+smap <m-u> <Plug>(complete_parameter#overload_up)
+
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+map z/ <Plug>(incsearch-easymotion-/)
+map z? <Plug>(incsearch-easymotion-?)
 
 " }}}
 
@@ -454,6 +488,16 @@ augroup END
 " }}}
 
 autocmd FileType startify setlocal buftype=
+
+augroup Pulse
+    autocmd!
+    autocmd User PrePulse  unsilent SearchIndex
+    "autocmd User PostPulse call Pulse_off()
+
+    " Pulses the first match after hitting the enter key
+    autocmd User IncSearchExecute call search_pulse#Pulse()
+augroup END
+
 " }}}
 
 " {{{ Plugin config
@@ -558,7 +602,7 @@ let g:ale_linters = {
 \}
 
 " ctrlp config
-let g:ctrlp_user_command = ['.git', 'git ls-files %s', 'rg --files %s']
+let g:ctrlp_user_command = ['.git', 'git ls-files %s', (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
 let g:startify_change_to_dir = 0
@@ -573,7 +617,6 @@ map <C-s>t <Plug>(CommandTTag)
 map <C-s>j <Plug>(CommandTJump)
 let g:CommandTTraverseSCM = 'dir'
 let g:CommandTGitScanSubmodules = 1
-let g:CommandTIgnoreCase = 1
 let g:CommandTFileScanner = 'git'
 
 " NERDTree config
@@ -599,6 +642,7 @@ xmap gr <Plug>CtrlSFVwordPath
 let g:ctrlsf_regex_pattern = 1
 let g:ctrlsf_default_root = 'project+wf'
 let g:ctrlsf_default_view_mode = 'compact'
+let g:ctrlsf_case_sensitive = 'yes'
 
 " grepper config
 nmap gs <Plug>(GrepperOperator)
@@ -608,8 +652,14 @@ let g:grepper.tools = ['rg', 'git', 'ag', 'grep']
 let g:grepper.dir = 'repo,cwd'
 let g:grepper.next_tool = '<C-f>'
 
-" incsearch-easymotion config
-map z/ <Plug>(incsearch-easymotion-/)
-map z? <Plug>(incsearch-easymotion-?)
+let g:vim_search_pulse_disable_auto_mappings = 1
+
+" Make interestingwords, searchindex, and pulse all work together
+autocmd VimEnter * map n <Plug>InterestingWordsForeward<Plug>Pulse
+autocmd VimEnter * map N <Plug>InterestingWordsBackward<Plug>Pulse
+autocmd VimEnter * map * <Plug>ImprovedStar_*<Plug>Pulse
+autocmd VimEnter * map # <Plug>ImprovedStar_#<Plug>Pulse
+autocmd VimEnter * map g* <Plug>ImprovedStar_g*<Plug>Pulse
+autocmd VimEnter * map g# <Plug>ImprovedStar_g#<Plug>Pulse
 
 " }}}
