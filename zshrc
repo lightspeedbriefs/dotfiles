@@ -18,7 +18,7 @@ else
     alias vi=vim
 fi
 gpp_opts='-Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods'
-cxx_opts='-std=c++14 -pthread -ggdb3 -Og -Werror -Wall -Wextra -Wdisabled-optimization'
+cxx_opts='-std=c++17 -pthread -ggdb3 -Og -Werror -Wall -Wextra -Wdisabled-optimization'
 c_opts='-std=c11 -ggdb3 -Og -Werror -Wall -Wextra'
 alias g++="g++ $cxx_opts $gpp_opts"
 alias gcc="gcc $c_opts"
