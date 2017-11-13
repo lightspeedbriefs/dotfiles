@@ -591,8 +591,9 @@ let g:airline_theme= 'onedark'
 let g:neomake_cpp_clang_args = ["-std=c++14", "-Wall", "-Wextra"]
 
 " ALE config
-let g:ale_cpp_clang_options = '-std=c++14 -Wall -Wextra'
-let g:ale_cpp_gcc_options = '-std=c++14 -Wall -Wextra -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wdisabled-optimization'
+let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
+let g:ale_cpp_clangtidy_options = '-std=c++17 -Wall -Wextra'
+let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wdisabled-optimization'
 let g:ale_cpp_cppcheck_options = '--enable=style --suppress=passedByValue'
 
 " Disable the checks that ALE runs in favor of those from .clang-tidy
