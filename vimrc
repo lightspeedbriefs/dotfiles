@@ -534,7 +534,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_cpp_compiler_options = ' -std=c++14 -Wall -Wextra'
+let g:syntastic_cpp_compiler_options = ' -std=c++17 -Wall -Wextra'
 
 " YouCompleteMe config
 let g:ycm_always_populate_location_list = 1
@@ -588,7 +588,7 @@ let g:airline_theme= 'onedark'
 "let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
 
 " neomake config
-let g:neomake_cpp_clang_args = ["-std=c++14", "-Wall", "-Wextra"]
+let g:neomake_cpp_clang_args = ["-std=c++17", "-Wall", "-Wextra"]
 
 " ALE config
 let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
