@@ -5,7 +5,7 @@ olddir=~/dotfiles_old                       # old dotfiles backup directory
 nvim_plug="$HOME/.local/share/nvim/site/autoload/plug.vim"
 vim_plug_dir="$HOME/.vim/autoload"
 # list of files/folders to symlink in homedir
-files="bashrc vimrc gitconfig minttyrc gdbinit colorgccrc color_coded clang_complete ycm_extra_conf.py zshenv zshrc"
+files="bashrc vimrc gitconfig minttyrc colorgccrc color_coded clang_complete ycm_extra_conf.py zshenv zshrc"
 
 ##########
 

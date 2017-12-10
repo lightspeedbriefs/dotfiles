@@ -17,13 +17,13 @@ if (( $+commands[nvim] )) ; then
 else
     alias vi=vim
 fi
-gpp_opts='-Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods'
-cxx_opts='-std=c++17 -pthread -ggdb3 -Og -Werror -Wall -Wextra -Wdisabled-optimization'
-c_opts='-std=c11 -ggdb3 -Og -Werror -Wall -Wextra'
+gpp_opts='-ggdb3 -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods'
+cxx_opts='-std=c++17 -pthread -Og -Wall -Wextra -Wdisabled-optimization'
+c_opts='-std=c11 -pthread -Og -Wall -Wextra'
 alias g++="g++ $cxx_opts $gpp_opts"
-alias gcc="gcc $c_opts"
-alias clang++="clang++ $cxx_opts"
-alias clang="clang $c_opts"
+alias gcc="gcc $c_opts -ggdb3"
+alias clang++="clang++ $cxx_opts -glldb"
+alias clang="clang $c_opts -glldb"
 unset cxx_opts c_opts gpp_opts
 if (( $+commands[rg] )) ; then
     alias rf='rg --files -g'

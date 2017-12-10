@@ -199,7 +199,8 @@ else
     "Plug 'maralla/completor.vim'
 
     " This plugin currently only supports vim and not neovim
-    Plug 'jeaye/color_coded', { 'do': 'cmake . && make -j$(nproc) && make install' }
+    " Disabled due to taking up a massive amount of disk space
+    "Plug 'jeaye/color_coded', { 'do': 'cmake . && make -j$(nproc) && make install' }
 endif
 
 if executable('cmake') && executable('python')
