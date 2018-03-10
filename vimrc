@@ -389,6 +389,7 @@ nnoremap <silent> <Leader>oj :FSBelow<cr>
 " Switch to the file and load it into a new window split below
 nnoremap <silent> <Leader>oJ :FSSplitBelow<cr>
 
+inoremap <silent><expr> ( complete_parameter#pre_complete("()")
 smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
 imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
 smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
@@ -515,7 +516,7 @@ let g:mwDefaultHighlightingPalette = 'extended'
 let g:multi_cursor_use_default_mapping=0
 let g:multi_cursor_next_key='<C-j>'
 let g:multi_cursor_prev_key='<C-k>'
-let g:multi_cursor_skip_key='<C-n>'
+let g:multi_cursor_skip_key='<C-f>'
 let g:multi_cursor_quit_key='<Esc>'
 
 " easytags config

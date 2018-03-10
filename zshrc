@@ -187,6 +187,9 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
     zplug "zsh-users/zsh-autosuggestions"
     zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
+    # Seems to break things
+    # zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
     zplug load --verbose
 fi
 
