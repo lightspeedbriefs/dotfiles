@@ -17,9 +17,10 @@ if (( $+commands[nvim] )) ; then
 else
     alias vi=vim
 fi
+link_flags='-Wl,--as-needed -Wl,--no-undefined -Wl,--warn-common'
 gpp_opts='-ggdb3 -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods'
-cxx_opts='-std=c++17 -pthread -Og -Wall -Wextra -Wdisabled-optimization'
-c_opts='-std=c11 -pthread -Og -Wall -Wextra'
+cxx_opts="-std=c++17 -pipe -pthread -fvisibility=hidden -D_GLIBCXX_ASSERTIONS -Og -gz -Wall -Wextra -Wdisabled-optimization $link_flags"
+c_opts="-std=c17 -pipe -pthread -fvisibility=hidden -D_GLIBCXX_ASSERTIONS -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -Og -gz -Wall -Wextra $link_flags"
 alias g++="g++ $cxx_opts $gpp_opts"
 alias gcc="gcc $c_opts -ggdb3"
 alias clang++="clang++ $cxx_opts -glldb"
