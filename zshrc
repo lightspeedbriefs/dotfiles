@@ -17,15 +17,17 @@ if (( $+commands[nvim] )) ; then
 else
     alias vi=vim
 fi
+gnu_opts='-ggdb3 -D_GLIBCXX_ASSERTIONS -Wshadow=compatible-local'
+clang_opts='-glldb -D_LIBCPP_DEBUG=1'
 link_flags='-Wl,--as-needed -Wl,--no-undefined -Wl,--warn-common'
-gpp_opts='-ggdb3 -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods'
-cxx_opts="-std=c++17 -pipe -pthread -fvisibility=hidden -D_GLIBCXX_ASSERTIONS -Og -gz -Wall -Wextra -Wdisabled-optimization $link_flags"
-c_opts="-std=c17 -pipe -pthread -fvisibility=hidden -D_GLIBCXX_ASSERTIONS -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -Og -gz -Wall -Wextra $link_flags"
-alias g++="g++ $cxx_opts $gpp_opts"
-alias gcc="gcc $c_opts -ggdb3"
-alias clang++="clang++ $cxx_opts -glldb"
-alias clang="clang $c_opts -glldb"
-unset cxx_opts c_opts gpp_opts
+gxx_opts='-Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wnull-dereference'
+cxx_opts="-std=c++17 -pipe -pthread -fvisibility=hidden -Og -gz -Wall -Wextra -Wdisabled-optimization $link_flags"
+c_opts="-std=c17 -pipe -pthread -fvisibility=hidden -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -Og -gz -Wall -Wextra -D_GNU_SOURCE $link_flags"
+alias g++="g++ $cxx_opts $gxx_opts $gnu_opts"
+alias gcc="gcc $c_opts $gnu_opts"
+alias clang++="clang++ $cxx_opts $clang_opts"
+alias clang="clang $c_opts $clang_opts"
+unset cxx_opts c_opts gxx_opts gnu_opts clang_opts link_flags
 if (( $+commands[rg] )) ; then
     alias rf='rg --files -g'
     alias findf='rg --files -g'
