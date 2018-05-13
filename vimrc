@@ -165,6 +165,9 @@ Plug 'mhinz/vim-sayonara'
 " Display function signatures from completions in the command line
 Plug 'Shougo/echodoc.vim'
 
+" Highlight yanked text briefly
+Plug 'machakann/vim-highlightedyank'
+
 " Snippets
 Plug 'SirVer/ultisnips'
 "Plug 'Shougo/neosnippet'
@@ -656,6 +659,10 @@ let g:grepper = {}
 let g:grepper.tools = ['rg', 'git', 'ag', 'grep']
 let g:grepper.dir = 'repo,cwd'
 let g:grepper.next_tool = '<C-f>'
+
+" sneak config
+let g:sneak#label = 1
+let g:sneak#use_ic_scs = 1
 
 let g:vim_search_pulse_disable_auto_mappings = 1
 
