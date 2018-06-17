@@ -207,7 +207,7 @@ else
 endif
 
 if executable('cmake') && executable('python')
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
     " This needs to go *after* ultisnips in vimrc
     Plug 'tenfyzhong/CompleteParameter.vim'
 
@@ -613,7 +613,13 @@ let g:ale_linters = {
 let g:ctrlp_user_command = ['.git', 'git ls-files %s', (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
+
+" startify config
 let g:startify_change_to_dir = 0
+
+function! StartifyEntryFormat()
+    return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+endfunction
 
 " command-t config
 map <C-space> <Plug>(CommandT)
