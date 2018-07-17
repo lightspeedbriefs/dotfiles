@@ -38,6 +38,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 " Last updated Sep '15
 Plug 'sgur/ctrlp-extensions.vim'
 
+Plug 'nixprime/cpsm', { 'do': './install.sh' }
+
 if executable('ruby') && executable('make') && executable('cc')
     Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
 endif
@@ -194,10 +196,7 @@ if has('nvim')
     " to be in an "alpha" state, and it is indeed somewhat buggy
     " Plug 'arakashic/chromatica.nvim'
 
-    " LLDB debugging
-    if executable('lldb')
-        Plug 'critiqjo/lldb.nvim'
-    endif
+    Plug 'sakhnik/nvim-gdb'
 else
     "Plug 'maralla/completor.vim'
 
@@ -613,6 +612,7 @@ let g:ale_linters = {
 let g:ctrlp_user_command = ['.git', 'git ls-files %s', (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
 " startify config
 let g:startify_change_to_dir = 0
