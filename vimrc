@@ -40,12 +40,14 @@ Plug 'sgur/ctrlp-extensions.vim'
 
 Plug 'nixprime/cpsm', { 'do': './install.sh' }
 
-if executable('ruby') && executable('make') && executable('cc')
-    Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
-endif
+" Other fuzzy finders worth examining: command-t, LeaderF, vim-picker
 
-" Similar to command-t and ctrlp
-" Less featureful, but worth keeping an eye on
+"if executable('ruby') && executable('make') && executable('cc')
+"    Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
+"endif
+
+"Plug 'Yggdroot/LeaderF'
+
 "Plug 'srstevenson/vim-picker'
 
 " Align statements such as assignments
@@ -160,6 +162,7 @@ Plug 'derekwyatt/vim-fswitch'
 
 " General-purpose command-line fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " Workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
 Plug 'mhinz/vim-sayonara'
@@ -633,14 +636,10 @@ function! StartifyEntryFormat()
     return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
 endfunction
 
+" fzf config
+map <silent> <M-t> :Tags<CR>
+
 " command-t config
-map <C-space> <Plug>(CommandT)
-map <C-s>l <Plug>(CommandTLine)
-map <C-s>b <Plug>(CommandTBuffer)
-map <C-s>c <Plug>(CommandTCommand)
-map <C-s>h <Plug>(CommandTHistory)
-map <C-s>t <Plug>(CommandTTag)
-map <C-s>j <Plug>(CommandTJump)
 let g:CommandTTraverseSCM = 'dir'
 let g:CommandTGitScanSubmodules = 1
 let g:CommandTFileScanner = 'git'
