@@ -46,7 +46,7 @@ Plug 'nixprime/cpsm', { 'do': './install.sh' }
 "    Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
 "endif
 
-"Plug 'Yggdroot/LeaderF'
+"Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 
 "Plug 'srstevenson/vim-picker'
 
