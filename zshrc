@@ -61,7 +61,7 @@ if (( $+commands[grc] )) ; then
     alias make='grc -es --colour=auto make -j$(nproc)'
     cmds=(ant as blkid configure cvs dig docker docker-machine du env fdisk findmnt gas getfacl getsebool \
         gold id ifconfig ip iptables lsattr lsblk lsmod lsof lspci mount mtr netstat nmap ping ps semanage \
-        tcpdump traceroute traceroute6 ulimit uptime vmstat)
+        tcpdump traceroute traceroute6 ulimit uptime vmstat whois iwconfig)
     # Already has color: diff, gcc, g++, systemctl
     # Interactive: dnf
     for cmd in $cmds ; do
@@ -153,6 +153,34 @@ bindkey '\C-x\C-e' edit-command-line
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
+    eval $(dircolors ~/.dir_colors)
+    zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+fi
+
+if [[ -f ~/.powerline-theme.json ]] ; then
+    themecmd=(-theme ~/.powerline-theme.json)
+fi
+
+if (( $+commands[powerline-go] )) ; then
+    function powerline_precmd() {
+        PS1="$(powerline-go -error $? -shell zsh $themecmd[@])"
+    }
+
+    function install_powerline_precmd() {
+      for s in "${precmd_functions[@]}"; do
+        if [ "$s" = "powerline_precmd" ]; then
+          return
+        fi
+      done
+      precmd_functions+=(powerline_precmd)
+    }
+
+    if [ "$TERM" != "linux" ]; then
+        install_powerline_precmd
+    fi
+fi
+
 if [[ -f ~/.zplug/init.zsh ]] ; then
     source ~/.zplug/init.zsh
 
@@ -164,28 +192,7 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug "supercrabtree/k"
 
-    zplug "justjanne/powerline-go", from:gh-r, as:command, rename-to:powerline-go
-
     zplug "lib/termsupport", from:oh-my-zsh
-
-    if (( $+commands[powerline-go] )) ; then
-        function powerline_precmd() {
-            PS1="$(powerline-go -error $? -shell zsh)"
-        }
-
-        function install_powerline_precmd() {
-          for s in "${precmd_functions[@]}"; do
-            if [ "$s" = "powerline_precmd" ]; then
-              return
-            fi
-          done
-          precmd_functions+=(powerline_precmd)
-        }
-
-        if [ "$TERM" != "linux" ]; then
-            install_powerline_precmd
-        fi
-    fi
 
     zplug "zsh-users/zsh-autosuggestions"
     zplug "zsh-users/zsh-syntax-highlighting", defer:2

@@ -49,3 +49,7 @@ file=~/.gdbinit
 
 file=~/.gdbinit.d/colors.gdb
 'curl' -fLo $file --create-dirs https://raw.githubusercontent.com/RAttab/dotfiles/master/colors.gdb
+
+file=~/.dir_colors
+[[ -s $file ]] && 'mv' -b $file ~/dotfiles_old/
+'curl' -fLo $file https://raw.githubusercontent.com/arcticicestudio/nord-dircolors/develop/src/dir_colors

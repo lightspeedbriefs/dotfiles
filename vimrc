@@ -196,7 +196,9 @@ if has('nvim')
     " to be in an "alpha" state, and it is indeed somewhat buggy
     " Plug 'arakashic/chromatica.nvim'
 
-    Plug 'sakhnik/nvim-gdb'
+    if executable('gdb') || executable('lldb')
+        Plug 'sakhnik/nvim-gdb'
+    endif
 else
     "Plug 'maralla/completor.vim'
 
@@ -313,7 +315,17 @@ endif
 if has('termguicolors')
     set termguicolors
 endif
-silent! colorscheme onedark
+
+let g:nord_italic = 1
+let g:nord_underline = 1
+
+" Make the foldcolumn a bit brighter than the line numbers
+augroup nord-overrides
+  autocmd!
+  autocmd ColorScheme nord highlight FoldColumn guifg=#7b88a1
+augroup END
+
+silent! colorscheme nord
 "hi clear CursorLine " need CursorLine highlighted for ctrlp
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline
@@ -586,7 +598,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
-let g:airline_theme= 'onedark'
+let g:airline_theme= 'nord'
 " Commented out for now because if left uncommented, this seems to prevent
 " airline from properly showing colors
 "let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
