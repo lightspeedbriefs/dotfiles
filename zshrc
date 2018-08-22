@@ -158,27 +158,29 @@ if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
     zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 fi
 
-if [[ -f ~/.powerline-theme.json ]] ; then
-    themecmd=(-theme ~/.powerline-theme.json)
-fi
-
 if (( $+commands[powerline-go] )) ; then
+    if [[ -f ~/.powerline-theme.json ]] ; then
+        _powerline_themecmd=(-theme ~/.powerline-theme.json)
+    fi
+
     function powerline_precmd() {
-        PS1="$(powerline-go -error $? -shell zsh $themecmd[@])"
+        PS1="$(powerline-go -error $? -shell zsh $_powerline_themecmd[@])"
     }
 
     function install_powerline_precmd() {
-      for s in "${precmd_functions[@]}"; do
-        if [ "$s" = "powerline_precmd" ]; then
-          return
-        fi
-      done
-      precmd_functions+=(powerline_precmd)
+        for s in "${precmd_functions[@]}"; do
+          if [ "$s" = "powerline_precmd" ]; then
+            return
+          fi
+        done
+        precmd_functions+=(powerline_precmd)
     }
 
     if [ "$TERM" != "linux" ]; then
         install_powerline_precmd
     fi
+
+    unfunction install_powerline_precmd
 fi
 
 if [[ -f ~/.zplug/init.zsh ]] ; then

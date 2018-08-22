@@ -21,6 +21,7 @@ export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export ENHANCD_FILTER=fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
+export FZF_DEFAULT_OPTS='--color=16'
 if (( $+commands[pygmentize] )) ; then
     export LESSOPEN="|pygmentize -O style=monokai -f 16m %s"
 elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
@@ -53,4 +54,3 @@ export GROFF_NO_SGR=yes
 # On OpenSuSE, show the first matching man page rather than a list of matching man pages 
 # (see https://www.suse.com/releasenotes/i386/openSUSE/11.1/RELEASE-NOTES.en.html)
 export MAN_POSIXLY_CORRECT=1
-#export JAVA_HOME=/usr/java/latest
