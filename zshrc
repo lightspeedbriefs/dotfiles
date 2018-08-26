@@ -196,6 +196,10 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug "lib/termsupport", from:oh-my-zsh
 
+    zplug "jhawthorn/fzy", \
+        as:command, \
+        hook-build:"make -j$(nproc)"
+
     zplug "zsh-users/zsh-autosuggestions"
     zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
