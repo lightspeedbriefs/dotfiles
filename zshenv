@@ -12,7 +12,7 @@ elif (( $+commands[vim] )) ; then
     export EDITOR=vim
     export VISUAL=vim
 fi
-export HSTR_CONFIG=hicolor
+export HSTR_CONFIG=hicolor,prompt-bottom
 export HISTFILE=~/.zsh_history
 export HISTFILESIZE=40000
 export HISTSIZE=40000
