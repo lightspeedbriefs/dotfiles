@@ -151,7 +151,7 @@ bindkey '\C-x\C-e' edit-command-line
 
 #bindkey -s "\C-r" "\eqhh\n"     # bind hh to Ctrl-r (for Vi mode check doc)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
 
 if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
     eval $(dircolors ~/.dir_colors)
@@ -188,8 +188,6 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug "b4b4r07/enhancd", use:init.sh
 
-    zplug "BurntSushi/ripgrep", use:complete
-
     zplug "facebook/pathpicker", as:command, use:fpp
 
     zplug "supercrabtree/k"
@@ -201,6 +199,7 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
         hook-build:"make -j$(nproc)"
 
     zplug "zsh-users/zsh-autosuggestions"
+    # Available in fedora repos but pretty out-of-date
     zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
     # Seems to break things
