@@ -17,8 +17,8 @@ if (( $+commands[nvim] )) ; then
 else
     alias vi=vim
 fi
-gnu_opts='-ggdb3 -D_GLIBCXX_ASSERTIONS -Wshadow=compatible-local'
-clang_opts='-glldb -D_LIBCPP_DEBUG=1'
+gnu_opts='-ggdb3 -fuse-ld=gold -D_GLIBCXX_ASSERTIONS -Wshadow=compatible-local'
+clang_opts='-glldb -fuse-ld=lld -Wimplicit-fallthrough -D_LIBCPP_DEBUG=1'
 link_flags='-Wl,--as-needed -Wl,--no-undefined -Wl,--warn-common'
 gxx_opts='-Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wnull-dereference'
 cxx_opts="-std=c++17 -pipe -pthread -fvisibility=hidden -Og -gz -Wall -Wextra -Wdisabled-optimization $link_flags"

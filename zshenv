@@ -1,6 +1,10 @@
-if [[ -d ~/.cargo/bin ]] ; then
-    export PATH=~/.cargo/bin:$PATH
-fi
+binpaths=(~/.cargo/bin ~/.local/bin ~/.nimble/bin)
+for binpath in $binpaths ; do
+    if [[ -d $binpath ]] ; then
+        export PATH=$binpath:$PATH
+    fi
+done
+unset binpaths
 export PYTHONPATH=/usr/lib64/python2.7/site-packages/lldb
 export CCACHE_PATH=/usr/bin
 export LESS='-JFXRs'

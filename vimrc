@@ -199,7 +199,7 @@ if has('nvim')
     " Plug 'arakashic/chromatica.nvim'
 
     if executable('gdb') || executable('lldb')
-        Plug 'sakhnik/nvim-gdb'
+        Plug 'sakhnik/nvim-gdb', { 'do': './install.sh' }
     endif
 else
     "Plug 'maralla/completor.vim'
@@ -356,7 +356,7 @@ nnoremap <silent> <C-Bslash> :CtrlPBuffer<cr>
 
 inoremap <silent> <C-n> :set invhlsearch<CR>
 nnoremap <silent> <C-n> :set invhlsearch<CR>
-noremap <silent> <C-m> :set invspell<CR>
+noremap <silent> <C-s> :set invspell<CR>
 noremap <silent> <C-h> :MarkClear<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
