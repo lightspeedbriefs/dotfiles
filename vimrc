@@ -212,7 +212,7 @@ endif
 if executable('cmake') && executable('python')
     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
     " This needs to go *after* ultisnips in vimrc
-    Plug 'tenfyzhong/CompleteParameter.vim'
+    " Plug 'tenfyzhong/CompleteParameter.vim'
 
     " Fork of YCM with better completion for function parameters
     " See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
@@ -303,6 +303,7 @@ set virtualedit=all
 set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc
 set wildmode=list:longest,full
 set winwidth=85
+set cmdheight=2
 set completeopt=menu,menuone
 if has('conceal')
     set conceallevel=2 concealcursor=niv
@@ -327,7 +328,7 @@ augroup nord-overrides
   autocmd ColorScheme nord highlight FoldColumn guifg=#7b88a1
 augroup END
 
-silent! colorscheme nord
+silent! colorscheme onedark
 "hi clear CursorLine " need CursorLine highlighted for ctrlp
 highlight SpellBad ctermbg=none cterm=underline
 highlight SpellCap ctermbg=none cterm=underline
@@ -405,19 +406,17 @@ nnoremap <silent> <Leader>oj :FSBelow<cr>
 " Switch to the file and load it into a new window split below
 nnoremap <silent> <Leader>oJ :FSSplitBelow<cr>
 
-inoremap <silent><expr> ( complete_parameter#pre_complete("()")
-smap <c-j> <Plug>(complete_parameter#goto_next_parameter)
-imap <c-j> <Plug>(complete_parameter#goto_next_parameter)
-smap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
-imap <c-k> <Plug>(complete_parameter#goto_previous_parameter)
+" {{{ CompleteParameter
+" inoremap <silent><expr> ( complete_parameter#pre_complete("()")
 
-nmap <m-d> <Plug>(complete_parameter#overload_down)
-imap <m-d> <Plug>(complete_parameter#overload_down)
-smap <m-d> <Plug>(complete_parameter#overload_down)
-
-nmap <m-u> <Plug>(complete_parameter#overload_up)
-imap <m-u> <Plug>(complete_parameter#overload_up)
-smap <m-u> <Plug>(complete_parameter#overload_up)
+" nmap <m-d> <Plug>(complete_parameter#overload_down)
+" imap <m-d> <Plug>(complete_parameter#overload_down)
+" smap <m-d> <Plug>(complete_parameter#overload_down)
+"
+" nmap <m-u> <Plug>(complete_parameter#overload_up)
+" imap <m-u> <Plug>(complete_parameter#overload_up)
+" smap <m-u> <Plug>(complete_parameter#overload_up)
+" }}}
 
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
@@ -577,6 +576,12 @@ let g:completor_clang_binary = '/usr/bin/clang'
 let g:chromatica#libclang_path = '/usr/lib64'
 let g:chromatica#enable_at_startup = 1
 
+" echodoc
+let g:echodoc#enable_at_startup = 1
+
+" CompleteParameter
+let g:complete_parameter_use_ultisnips_mappings = 1
+
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
@@ -600,7 +605,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
-let g:airline_theme= 'nord'
+let g:airline_theme= 'onedark'
 " Commented out for now because if left uncommented, this seems to prevent
 " airline from properly showing colors
 "let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
