@@ -153,6 +153,8 @@ bindkey '\C-x\C-e' edit-command-line
 
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
 
+bindkey '^ ' autosuggest-execute
+
 if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
     eval $(dircolors ~/.dir_colors)
     zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
