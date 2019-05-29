@@ -83,6 +83,9 @@ Plug 'tpope/vim-fugitive'
 " Note: gitgutter recommends using signify if you use VCS tools other than git
 Plug 'airblade/vim-gitgutter'
 
+" Floating windows with Git blame
+Plug 'rhysd/git-messenger.vim'
+
 " Git commit browser
 Plug 'junegunn/gv.vim'
 
