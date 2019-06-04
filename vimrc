@@ -13,7 +13,7 @@ else
 endif
 
 " {{{ Plugins
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(fnamemodify($MYVIMRC, ':p:h') . '/plugged')
 
 " Syntax checkers
 " Plug 'scrooloose/syntastic'
@@ -213,7 +213,7 @@ else
 endif
 
 if executable('cmake') && executable('python')
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
     " This needs to go *after* ultisnips in vimrc
     " Plug 'tenfyzhong/CompleteParameter.vim'
 
@@ -329,6 +329,25 @@ let g:nord_underline = 1
 augroup nord-overrides
   autocmd!
   autocmd ColorScheme nord highlight FoldColumn guifg=#7b88a1
+augroup END
+
+" onedark.vim override: Don't set a background color when running in a terminal;
+" just use the terminal's background color
+" `gui` is the hex color code used in GUI mode/nvim true-color mode
+" `cterm` is the color code used in 256-color mode
+" `cterm16` is the color code used in 16-color mode
+if (has("autocmd") && !has("gui_running"))
+  augroup colorset
+    autocmd!
+    let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+    autocmd ColorScheme onedark call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
+  augroup END
+endif
+
+augroup termcolor
+  autocmd!
+  autocmd TermOpen * colorscheme nord
+  autocmd BufHidden term://* colorscheme onedark | doautoall ColorScheme onedark
 augroup END
 
 silent! colorscheme onedark
@@ -608,7 +627,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
-let g:airline_theme= 'onedark'
+let g:airline_theme= 'nord'
 " Commented out for now because if left uncommented, this seems to prevent
 " airline from properly showing colors
 "let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
