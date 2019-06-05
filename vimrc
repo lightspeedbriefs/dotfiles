@@ -344,6 +344,9 @@ if (has("autocmd") && !has("gui_running"))
   augroup END
 endif
 
+" Workaround these issues:
+" https://github.com/neovim/neovim/issues/4696
+" https://github.com/neovim/neovim/issues/7018
 augroup termcolor
   autocmd!
   autocmd TermOpen * colorscheme nord
@@ -408,6 +411,8 @@ xmap ga <Plug>(EasyAlign)
 
 nmap gp <Plug>(ale_previous_wrap)
 nmap gn <Plug>(ale_next_wrap)
+
+nnoremap <silent> <M-t> :Tags<CR>
 
 " Switch to the file and load it into the current window
 nnoremap <silent> <Leader>of :FSHere<cr>
