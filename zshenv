@@ -1,4 +1,4 @@
-binpaths=(~/.cargo/bin ~/.local/bin ~/.nimble/bin)
+binpaths=(~/.cargo/bin ~/.poetry/bin ~/.local/bin ~/.nimble/bin)
 for binpath in $binpaths ; do
     if [[ -d $binpath ]] ; then
         export PATH=$binpath:$PATH

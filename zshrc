@@ -1,14 +1,12 @@
 if (( $+commands[exa] )) ; then
     alias exa='exa -F'
-    alias ls='exa -F'
-    alias ll='exa -lh --git'
+    alias xl='exa -lh --git'
+fi
+alias ls='ls --color -F'
+if (( $+commands[grc] )) ; then
+    alias ll='grc -es --colour=auto ls -lhF --color'
 else
-    alias ls='ls --color -F'
-    if (( $+commands[grc] )) ; then
-        alias ll='grc -es --colour=auto ls -lhF --color'
-    else
-        alias ll='ls -lh'
-    fi
+    alias ll='ls -lh'
 fi
 alias cx='chmod +x'
 alias egrep='egrep --color'
@@ -79,6 +77,8 @@ else
         alias make='make -j$(nproc)'
     fi
 fi
+alias ncdu="ncdu --color=dark"
+alias pping=prettyping
 alias -s git='git clone'
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=aunpack
 
@@ -154,6 +154,10 @@ bindkey '\C-x\C-e' edit-command-line
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
 
 bindkey '^ ' autosuggest-execute
+
+if [[ -d ~/.zfunc ]] ; then
+    fpath+=~/.zfunc
+fi
 
 if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
     eval $(dircolors ~/.dir_colors)
