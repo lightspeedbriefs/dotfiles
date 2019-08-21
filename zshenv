@@ -24,9 +24,13 @@ export SAVEHIST=40000
 export HISTTIMEFORMAT="[%Y-%m-%d %H:%M:%S] "
 export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export ENHANCD_FILTER=fzf:fzy:percol:pick:selecta:fpp
+export ENHANCD_FILTER=sk:fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
-export FZF_DEFAULT_OPTS='--color=16'
+# Nord colorscheme
+export FZF_DEFAULT_OPTS='
+  --color fg:#D8DEE9,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#434C5E,hl+:#A3BE8C
+  --color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B
+'
 if (( $+commands[pygmentize] )) ; then
     export LESSOPEN="|pygmentize -O style=monokai -f 16m %s"
 elif (( $+commands[src-hilite-lesspipe.sh] )) ; then

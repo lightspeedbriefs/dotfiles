@@ -164,7 +164,7 @@ Plug 'EinfachToll/DidYouMean'
 Plug 'derekwyatt/vim-fswitch'
 
 " General-purpose command-line fuzzy finder
-Plug 'junegunn/fzf.vim'
+Plug 'lotabout/skim.vim'
 
 " Workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
 Plug 'mhinz/vim-sayonara'

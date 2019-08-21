@@ -80,7 +80,7 @@ fi
 alias ncdu="ncdu --color=dark"
 alias pping=prettyping
 alias -s git='git clone'
-alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=aunpack
+alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz,zst}=aunpack
 
 autoload -U colors && colors
 export SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r?$reset_color (Yes, No, Abort, Edit) "
@@ -151,7 +151,7 @@ bindkey '\C-x\C-e' edit-command-line
 
 #bindkey -s "\C-r" "\eqhh\n"     # bind hh to Ctrl-r (for Vi mode check doc)
 
-[ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
+[ -f /usr/share/skim/shell/key-bindings.zsh ] && source /usr/share/skim/shell/key-bindings.zsh
 
 bindkey '^ ' autosuggest-execute
 
