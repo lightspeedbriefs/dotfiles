@@ -202,7 +202,7 @@ if has('nvim')
     " Plug 'arakashic/chromatica.nvim'
 
     if executable('gdb') || executable('lldb')
-        Plug 'sakhnik/nvim-gdb', { 'do': './install.sh' }
+        Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
     endif
 else
     "Plug 'maralla/completor.vim'
@@ -212,7 +212,7 @@ else
     "Plug 'jeaye/color_coded', { 'do': 'cmake . && make -j$(nproc) && make install' }
 endif
 
-if executable('cmake') && executable('python')
+if executable('cmake') && executable('python') && executable('c++')
     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
     " This needs to go *after* ultisnips in vimrc
     " Plug 'tenfyzhong/CompleteParameter.vim'
@@ -655,7 +655,7 @@ let g:ale_linters = {
 \}
 
 " ctrlp config
-let g:ctrlp_user_command = ['.git', 'git ls-files %s', (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
+let g:ctrlp_user_command = ['.git', 'git ls-files %s', executable('fd') ? 'fd -t f . %s' : (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}

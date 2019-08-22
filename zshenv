@@ -31,6 +31,7 @@ export FZF_DEFAULT_OPTS='
   --color fg:#D8DEE9,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#434C5E,hl+:#A3BE8C
   --color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B
 '
+export SKIM_DEFAULT_OPTIONS="$FZF_DEFAULT_OPTS"
 if (( $+commands[pygmentize] )) ; then
     export LESSOPEN="|pygmentize -O style=monokai -f 16m %s"
 elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
@@ -38,13 +39,15 @@ elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
 elif (( $+commands[rougify] )) ; then
     export LESSOPEN="|rougify -t base16.monokai %s"
 fi
+if (( $+commands[fd] )) ; then
+    export FZF_DEFAULT_COMMAND='fd -t f'
 if (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 elif (( $+commands[ag] )) ; then
     export FZF_DEFAULT_COMMAND='ag -g ""'
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export SKIM_DEFAULT_COMMAND="$FZF_DEFAULT_COMMAND"
 export HH_CONFIG=hicolor
 if [[ -n "$DISPLAY" ]] ; then
     export BROWSER=firefox
