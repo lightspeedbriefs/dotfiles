@@ -41,7 +41,7 @@ elif (( $+commands[rougify] )) ; then
 fi
 if (( $+commands[fd] )) ; then
     export FZF_DEFAULT_COMMAND='fd -t f'
-if (( $+commands[rg] )) ; then
+elif (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
 elif (( $+commands[ag] )) ; then
     export FZF_DEFAULT_COMMAND='ag -g ""'
