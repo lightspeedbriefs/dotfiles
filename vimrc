@@ -144,6 +144,9 @@ Plug 'kopischke/vim-fetch'
 " Nix syntax
 Plug 'LnL7/vim-nix'
 
+" Meson syntax
+Plug 'mesonbuild/meson', { 'rtp': 'data/syntax-highlighting/vim' }
+
 " Run google test framework unit tests within vim
 Plug 'alepez/vim-gtest'
 
@@ -213,7 +216,7 @@ else
 endif
 
 if executable('cmake') && executable('python') && executable('c++')
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
+    Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
     " This needs to go *after* ultisnips in vimrc
     " Plug 'tenfyzhong/CompleteParameter.vim'
 
