@@ -1,5 +1,5 @@
 [core]
-    editor = vim
+    editor = nvim
     pager = diff-highlight | less -r
 [credential]
     helper = cache --timeout=3600

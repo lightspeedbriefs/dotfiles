@@ -478,6 +478,19 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
+augroup custom_filetype
+    au!
+
+    au FileType yaml,yml setlocal sw=2 sts=2
+
+    au FileType gitcommit setlocal spell cc=80
+    au FileType README setlocal spell cc=80
+    au FileType text,txt setlocal spell cc=80
+    au FileType markdown setlocal spell cc=80
+    au FileType vimwiki setlocal spell cc=80
+    au FileType rst setlocal spell cc=80
+augroup END
+
 " Exit Paste mode when leaving Insert mode
 autocmd InsertLeave * set nopaste
 
@@ -635,7 +648,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
-let g:airline_theme= 'nord'
+let g:airline_theme= 'onedark'
 " Commented out for now because if left uncommented, this seems to prevent
 " airline from properly showing colors
 "let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
@@ -724,5 +737,9 @@ autocmd VimEnter * map * <Plug>ImprovedStar_*<Plug>Pulse
 autocmd VimEnter * map # <Plug>ImprovedStar_#<Plug>Pulse
 autocmd VimEnter * map g* <Plug>ImprovedStar_g*<Plug>Pulse
 autocmd VimEnter * map g# <Plug>ImprovedStar_g#<Plug>Pulse
+
+iab todo TODO
+iab fixme FIXME
+iab xxx XXX
 
 " }}}
