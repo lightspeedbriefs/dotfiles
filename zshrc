@@ -43,12 +43,12 @@ elif (( $+commands[ag] )) ; then
     alias findf='ag -g ""'
     alias cgrep='ag --cpp'
 elif (( $+commands[fd] )) ; then
-    alias findf='fd -tf'
+    alias findf='fd -t f'
 else
     alias findf='find . -type f -name'
 fi
 if (( $+commands[fd] )) ; then
-    alias findd='fd -td'
+    alias findd='fd -t d'
 else
     alias findd='find . -type d -name'
 fi
