@@ -393,7 +393,6 @@ nmap <leader>q <Plug>(QuickScopeToggle)
 vmap <leader>q <Plug>(QuickScopeToggle)
 
 " Source code navigation
-"au FileType c,cpp  nmap gd <Plug>(clang_complete_goto_declaration)
 nnoremap <silent> gd :YcmCompleter GoToDeclaration<CR>
 nnoremap <silent> gi :YcmCompleter GoToInclude<CR>
 nnoremap <silent> gt :YcmCompleter GetType<CR>
@@ -596,21 +595,6 @@ let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
 " deoplete config
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib64/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib64/clang'
-
-" clang_complete config
-let g:clang_library_path = '/usr/lib64/libclang.so'
-let g:clang_snippets=1
-let g:clang_conceal_snippets=1
-let g:clang_snippets_engine='ultisnips'
-
-" completor config
-let g:completor_clang_binary = '/usr/bin/clang'
-
-" chromatica config
-let g:chromatica#libclang_path = '/usr/lib64'
-let g:chromatica#enable_at_startup = 1
 
 " echodoc
 let g:echodoc#enable_at_startup = 1
