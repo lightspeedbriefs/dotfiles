@@ -9,7 +9,10 @@ export PYTHONPATH=/usr/lib64/python2.7/site-packages/lldb
 export CCACHE_PATH=/usr/bin
 export LESS='-JFXRs'
 export PAGER=less
-if (( $+commands[nvim] )) ; then
+if (( $+commands[code] )) && [[ "$TERM_PROGRAM" == vscode ]] ; then
+    export EDITOR='code -r --wait'
+    export VISUAL='code -r --wait'
+elif (( $+commands[nvim] )) ; then
     export EDITOR=nvim
     export VISUAL=nvim
 elif (( $+commands[vim] )) ; then
@@ -26,29 +29,33 @@ export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export ENHANCD_FILTER=sk:fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
+export BAT_THEME=TwoDark
 # Nord colorscheme
 export FZF_DEFAULT_OPTS='
   --color fg:#D8DEE9,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#434C5E,hl+:#A3BE8C
   --color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B
 '
 export SKIM_DEFAULT_OPTIONS="$FZF_DEFAULT_OPTS"
-if (( $+commands[pygmentize] )) ; then
-    export LESSOPEN="|pygmentize -O style=monokai -f 16m %s"
-elif (( $+commands[src-hilite-lesspipe.sh] )) ; then
-    export LESSOPEN="|src-hilite-lesspipe.sh %s"
-elif (( $+commands[rougify] )) ; then
-    export LESSOPEN="|rougify -t base16.monokai %s"
+export FZF_CTRL_T_OPTS="--exit-0"
+if (( $+commands[bat] )) ; then
+    export LESSOPEN='|bat --color=always %s'
+    export FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS --preview 'bat --color=always {}'"
+fi
+export FZF_ALT_C_OPTS="--exit-0"
+if (( $+commands[lsd] )) ; then
+    export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'lsd --icon=always --color=always {}'"
 fi
 if (( $+commands[fd] )) ; then
     export FZF_DEFAULT_COMMAND='fd -t f'
+    export FZF_ALT_C_COMMAND='fd -t d --hidden --exclude ".git"'
 elif (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
 elif (( $+commands[ag] )) ; then
     export FZF_DEFAULT_COMMAND='ag -g ""'
 fi
+export FZF_COMPLETION_TRIGGER='::'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export SKIM_DEFAULT_COMMAND="$FZF_DEFAULT_COMMAND"
-export HH_CONFIG=hicolor
 if [[ -n "$DISPLAY" ]] ; then
     export BROWSER=firefox
 fi

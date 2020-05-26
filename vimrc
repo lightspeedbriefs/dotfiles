@@ -1,10 +1,12 @@
 if has('nvim')
+    let s:plugged_dir = stdpath('data') . '/plugged'
     if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
       silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 else
+    let s:plugged_dir = '~/.vim/plugged'
     if empty(glob('~/.vim/autoload/plug.vim'))
       silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -13,7 +15,7 @@ else
 endif
 
 " {{{ Plugins
-call plug#begin(fnamemodify($MYVIMRC, ':p:h') . '/plugged')
+call plug#begin(s:plugged_dir)
 
 " Syntax checkers
 " Plug 'scrooloose/syntastic'
@@ -24,6 +26,8 @@ Plug 'w0rp/ale'
 Plug 'honza/vim-snippets'
 
 " Browse tags for the current file to get an overview of its structure in a sidebar
+" Also consider vista.vim when this issue has been fixed:
+" https://github.com/liuchengxu/vista.vim/issues/123
 Plug 'majutsushi/tagbar'
 
 " Nice start screen when vim is opened with no args
@@ -35,23 +39,25 @@ Plug 'mbbill/undotree'
 
 " Fuzzy file, buffer, mru, tag, etc. finder
 Plug 'ctrlpvim/ctrlp.vim'
-" Last updated Sep '15
 Plug 'sgur/ctrlp-extensions.vim'
-
 Plug 'nixprime/cpsm', { 'do': './install.sh' }
 
-" Other fuzzy finders worth examining: command-t, LeaderF, vim-picker
+if executable('python')
+    Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+endif
 
-"if executable('ruby') && executable('make') && executable('cc')
-"    Plug 'wincent/command-t', { 'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make -j$(proc)' }
-"endif
+" Still in beta, has rough edges
+" Plug 'liuchengxu/vim-clap'
 
-"Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-
-"Plug 'srstevenson/vim-picker'
+" Unfortunately, skim lacks a maintainer for Fedora
+" so upstream is no longer shipping it:
+" https://bugzilla.redhat.com/show_bug.cgi?id=1823686
+" Additionally, the upstream fzf package seems to be
+" missing functionality in the vim plugin (e.g. it does
+" not provide the :Commits command)
+Plug 'junegunn/fzf.vim'
 
 " Align statements such as assignments
-" Last updated Mar '16
 Plug 'junegunn/vim-easy-align'
 
 if executable('ctags')
@@ -66,6 +72,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'chip/vim-fat-finger'
 
 " File navigation tree window
+" See also: https://github.com/lambdalisue/fern.vim
 Plug 'scrooloose/nerdtree'
 
 " Show git status symbols in the nerd tree
@@ -89,6 +96,9 @@ Plug 'rhysd/git-messenger.vim'
 " Git commit browser
 Plug 'junegunn/gv.vim'
 
+" Show git blame snippets to the right of the text on each line
+Plug 'APZelos/blamer.nvim'
+
 " Superior alternatives to ack.vim
 " These plugins offer extremely similar functionality,
 " although ctrlsf seems more featureful
@@ -102,6 +112,9 @@ Plug 'haya14busa/incsearch-easymotion.vim'
 " Commenting plugins
 Plug 'scrooloose/nerdcommenter'
 Plug 'tomtom/tcomment_vim'
+
+" % operator on steroids
+Plug 'andymass/vim-matchup'
 
 " Show the contents of the registers on the sidebar when you hit " or @ in normal
 " mode or <CTRL-R> in insert mode
@@ -129,9 +142,6 @@ Plug 'terryma/vim-multiple-cursors'
 " Create an awesome status line
 Plug 'vim-airline/vim-airline'
 
-" Generate a shell prompt from airline config
-Plug 'edkolev/promptline.vim'
-
 " Open a link by pressing 'gx' on it, or search a word or phrase by pressing 'gx' on it
 Plug 'tyru/open-browser.vim'
 
@@ -145,7 +155,17 @@ Plug 'kopischke/vim-fetch'
 Plug 'LnL7/vim-nix'
 
 " Meson syntax
-Plug 'mesonbuild/meson', { 'rtp': 'data/syntax-highlighting/vim' }
+if executable('meson')
+    Plug 'mesonbuild/meson', { 'rtp': 'data/syntax-highlighting/vim' }
+endif
+
+" Dart syntax
+Plug 'dart-lang/dart-vim-plugin'
+
+" Zig syntax
+if executable('zig')
+    Plug 'ziglang/zig.vim'
+endif
 
 " Run google test framework unit tests within vim
 Plug 'alepez/vim-gtest'
@@ -166,9 +186,6 @@ Plug 'EinfachToll/DidYouMean'
 " Switch between source and header (alternatives to this include a.vim and altr)
 Plug 'derekwyatt/vim-fswitch'
 
-" General-purpose command-line fuzzy finder
-Plug 'lotabout/skim.vim'
-
 " Workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
 Plug 'mhinz/vim-sayonara'
 
@@ -183,36 +200,17 @@ Plug 'SirVer/ultisnips'
 "Plug 'Shougo/neosnippet'
 "Plug 'Shougo/neosnippet-snippets'
 
-" Code completion for C++
-" There's several options: Deoplete (with deoplete-clang) for neovim,
-" neoplete (for vim), clang_complete, YouCompleteMe,
-" nvim-completion-manager, and completor.vim
-
-" C++ semantic highlighting
-
-" This plugin looks cool but requires a patched YouCompleteMe
-" The benefit is that the compiler is invoked only once for both
-" completion and semantic highlighting
-" Plug 'davits/DyeVim'
-
 if has('nvim')
-    "Plug 'roxma/nvim-completion-manager'
-    " Fork of clang_complete focused on integration with nvim-completion-manager
-    "Plug 'roxma/clang_complete'
+    Plug 'norcalli/nvim-colorizer.lua'
 
-    " This plugin has support for neovim out of the box, but it claims
-    " to be in an "alpha" state, and it is indeed somewhat buggy
-    " Plug 'arakashic/chromatica.nvim'
+    " Kind of like :BLines or :CtrlPLine or :LeaderfLine
+    Plug 'ripxorip/aerojump.nvim', { 'do': ':UpdateRemotePlugins' }
 
     if executable('gdb') || executable('lldb')
         Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
     endif
 else
-    "Plug 'maralla/completor.vim'
-
-    " This plugin currently only supports vim and not neovim
-    " Disabled due to taking up a massive amount of disk space
-    "Plug 'jeaye/color_coded', { 'do': 'cmake . && make -j$(nproc) && make install' }
+    Plug 'markonm/traces.vim'
 endif
 
 if executable('cmake') && executable('python') && executable('c++')
@@ -229,29 +227,19 @@ endif
 " }}}
 
 " {{{ Themes
-Plug 'AlessandroYorba/Alduin'
-Plug 'altercation/vim-colors-solarized'
-Plug 'tomasr/molokai'
-Plug 'dracula/vim'
-Plug 'chriskempson/base16-vim'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'baskerville/bubblegum'
-Plug 'romainl/Apprentice'
-Plug 'morhetz/gruvbox'
-Plug 'NLKNguyen/papercolor-theme'
-Plug '0ax1/lxvc'
 
+" Note for Fedora: fontawesome fonts are way out of date.
+" https://bugzilla.redhat.com/show_bug.cgi?id=1543407
+" https://bugzilla.redhat.com/show_bug.cgi?id=1808064
+" There is a copr that can be used in the meantime:
+" https://copr.fedorainfracloud.org/coprs/vishalvvr/fontawesome-fonts/
 Plug 'ryanoasis/vim-devicons'
 
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'joshdick/onedark.vim'
-Plug 'koron/nyancat-vim'
-Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-Plug 'kristijanhusak/vim-hybrid-material'
-Plug 'zanglg/nova.vim'
-Plug 'jacoborus/tender.vim'
-Plug 'rakr/vim-one'
-Plug 'mhartington/oceanic-next'
 Plug 'arcticicestudio/nord-vim'
+
+" }}}
 
 call plug#end()
 " }}}
@@ -347,14 +335,16 @@ if (has("autocmd") && !has("gui_running"))
   augroup END
 endif
 
-" Workaround these issues:
-" https://github.com/neovim/neovim/issues/4696
-" https://github.com/neovim/neovim/issues/7018
-augroup termcolor
-  autocmd!
-  autocmd TermOpen * colorscheme nord
-  autocmd BufHidden term://* colorscheme onedark | doautoall ColorScheme onedark
-augroup END
+if has('nvim')
+    " Workaround these issues:
+    " https://github.com/neovim/neovim/issues/4696
+    " https://github.com/neovim/neovim/issues/7018
+    augroup termcolor
+      autocmd!
+      autocmd TermOpen term://*zsh colorscheme nord
+      autocmd BufHidden term://*zsh colorscheme onedark | doautoall ColorScheme onedark
+    augroup END
+endif
 
 silent! colorscheme onedark
 "hi clear CursorLine " need CursorLine highlighted for ctrlp
@@ -365,6 +355,7 @@ highlight SpellRare ctermbg=none cterm=underline
 " }}}
 
 " {{{ Mappings
+map <Space> <Leader>
 noremap <silent> <F1> :bp<CR>
 noremap <silent> <F2> :bn<CR>
 noremap <silent> <F3> :b#<CR>
@@ -380,6 +371,8 @@ noremap <silent> <F12> :GundoToggle<CR>
 " Workaround for NERDTree making bd close vim http://stackoverflow.com/a/16505009
 " An alternative fix is to use bufkill (last commit Aug 16)
 nnoremap <silent> <leader>bd :bp<cr>:bd #<cr>
+
+nnoremap <silent> <leader>bt :BlamerToggle<cr>
 
 nnoremap <silent> <C-Bslash> :CtrlPBuffer<cr>
 
@@ -649,12 +642,12 @@ let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
 let g:airline_theme= 'onedark'
-" Commented out for now because if left uncommented, this seems to prevent
-" airline from properly showing colors
-"let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert', '%{gutentags#statusline("✎")}'])
 
 " neomake config
 let g:neomake_cpp_clang_args = ["-std=c++17", "-Wall", "-Wextra"]
+
+" vim-matchup config
+let g:matchup_matchparen_offscreen = {'method': 'popup'}
 
 " ALE config
 let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
@@ -675,6 +668,25 @@ let g:ctrlp_user_command = ['.git', 'git ls-files %s', executable('fd') ? 'fd -t
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+
+" leaderf config
+" let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_StlSeparator = { 'left': '', 'right': '' }
+let g:Lf_StlColorscheme = 'one'
+let g:Lf_DefaultMode = 'NameOnly'
+let g:Lf_ExternalCommand = 'fd -t f . "%s"'
+" Unfortunately, this doesn't work the way I would have hoped (A with fallback
+" to a).  Instead, it is either A or a and a is always chosen https://git.io/JfaV9
+let g:Lf_WorkingDirectoryMode = 'Aa'
+let g:Lf_AutoResize = 1
+" Using "git ls-files --others" results in hidden files/dirs being included
+let g:Lf_UseVersionControlTool = 0
+" This only works for BufTag
+" let g:Lf_PreviewCode = 1
+let g:Lf_IgnoreCurrentBufferName = 1
+let g:Lf_ReverseOrder = 1
+let g:Lf_PreviewHorizontalPosition = 'center'
 
 " startify config
 let g:startify_change_to_dir = 0
@@ -727,6 +739,19 @@ let g:grepper.next_tool = '<C-f>'
 " sneak config
 let g:sneak#label = 1
 let g:sneak#use_ic_scs = 1
+
+" aerojump config
+nmap <Leader>as <Plug>(AerojumpSpace)
+nmap <Leader>ab <Plug>(AerojumpBolt)
+nmap <Leader>aa <Plug>(AerojumpFromCursorBolt)
+nmap <Leader>ad <Plug>(AerojumpDefault) " Boring mode
+
+" blamer config
+" let g:blamer_enabled = 1
+
+if has('nvim')
+    lua require'colorizer'.setup()
+endif
 
 let g:vim_search_pulse_disable_auto_mappings = 1
 
