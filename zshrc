@@ -5,10 +5,12 @@ if (( $+commands[exa] )) ; then
 fi
 if (( $+commands[lsd] )) ; then
     alias tree='lsd --total-size --tree --blocks size,name'
+    alias lsdu='lsd --total-size --blocks size,name -S'
+    alias lsdtree='lsd --total-size --tree --blocks size,name'
 else
     alias tree='tree -h --du'
 fi
-alias ls='ls --color -F'
+alias ls='ls --color=auto -F'
 if (( $+commands[grc] )) ; then
     alias ll='grc -es --colour=auto ls -lhF --color'
 else
@@ -34,6 +36,8 @@ alias gcc="gcc $c_opts $gnu_opts"
 alias clang++="clang++ -Woverloaded-virtual -Wnon-virtual-dtor $cxx_opts $clang_opts"
 alias clang="clang $c_opts $clang_opts"
 unset cxx_opts c_opts gxx_opts gnu_opts clang_opts link_flags
+alias ip='ip -color=auto'
+alias history='history -f'
 if (( $+commands[rg] )) ; then
     alias rf='rg --files -g'
     alias findf='rg --files -g'
@@ -52,7 +56,11 @@ if (( $+commands[fd] )) ; then
 else
     alias findd='find . -type d -name'
 fi
-if (( $+commands[colordiff] )) ; then
+# GNU diff received support for directly outputting
+# in color in 2016: https://git.savannah.gnu.org/cgit/diffutils.git/tree/NEWS
+if 'diff' --color=auto --version &>/dev/null ; then
+    alias diff='diff --color=auto'
+elif (( $+commands[colordiff] )) ; then
     alias diff=colordiff
 elif (( $+commands[grc] )) ; then
     alias diff='grc -es --colour=auto diff'
@@ -77,9 +85,9 @@ if (( $+commands[grc] )) ; then
     # Note: on Fedora you can source /etc/grc.zsh to have this done for a pre-set list of
     # commands, but it is not as comprehensive as what is shown here.
     cmds=(ant as blkid configure cvs dig docker docker-machine du env fdisk findmnt gas getfacl getsebool \
-        gold id ifconfig ip iptables lsattr lsblk lsmod lsof lspci mount mtr netstat nmap ping ping6 ps semanage \
+        gold id ifconfig iptables lsattr lsblk lsmod lsof lspci mount mtr netstat nmap ping ping6 ps semanage \
         tcpdump traceroute traceroute6 ulimit uptime vmstat whois iwconfig)
-    # Already has color: diff, dnf, gcc, g++, systemctl
+    # Already has color: diff, dnf, gcc, g++, ip, systemctl
     for cmd in $cmds ; do
         if (( $+commands[$cmd] )) ; then
           alias $cmd="grc -es --colour=auto $cmd"
@@ -106,7 +114,6 @@ export SPROMPT="Correct $fg[red]%R$reset_color to $fg[green]%r?$reset_color (Yes
 autoload -U compinit && compinit
 
 setopt   combining_chars
-setopt   complete_aliases
 setopt   complete_in_word
 setopt   correct
 setopt   correctall
@@ -182,13 +189,62 @@ if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
     zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 fi
 
-# TODO: figure out more to take from:
-# https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/completion.zsh
-# https://github.com/mattjj/my-oh-my-zsh/blob/master/completion.zsh
-# https://gist.github.com/flixr/1468156/4b2100203ace61d8affce6846cf45b889cb2d67b
-
-# ignores filenames already in the line
-zstyle ':completion:*:(rm|cp|mv|kill|diff|icdiff|cdiff|colordiff):*' ignore-line yes
+# Allow arrow navigation and search in options
+zstyle ':completion:*' menu select search
+# Don't complete directory we are already in
+zstyle ':completion:*' ignore-parents parent pwd
+# Ignore completion functions
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec)|prompt_*)'
+# Explicitly write the type of what the autocomplete has found / was looking for
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+# Try to auto-generate descriptions of single-argument options for which there are none
+zstyle ':completion:*:options' auto-description '%d'
+# More complete output (e.g. show both short (-l) and long (--long) versions of options)
+zstyle ':completion:*' verbose yes
+# make completions appear below the description of which listing they come from
+zstyle ':completion:*' group-name ''
+# Don't overwrite source files with their compiled outputs
+zstyle ':completion:*:*:(c++|g++|clang++|clang|gcc|cc):option-o*:*' ignored-patterns '*?.h' '*?.hpp' '*?.hh' '*?.hxx' '*?.c' '*?.cc' '*?.cxx' '*?.cpp'
+# Pare down umount choices
+zstyle ':completion:*:*:umount:argument-*:directories' ignored-patterns '/sys*' '/proc*' '/var/lib/snapd*' '/run/snapd*' '/dev*'
+zstyle ':completion:*:*:umount:argument-*:device-paths' ignored-patterns '/dev/loop*'
+zstyle ':completion:*:*:umount:argument-*:device-labels' ignored-patterns 'proc' 'sysfs'
+# Present umount choices in a better order
+zstyle ':completion:*:*:umount:argument-*:*' group-order directories device-paths device-labels
+# Don't try to treat binary files like text
+pat1="wav|mp3|flac|ogg|mp4|avi|mkv|webm|iso|dmg|so|o|a|bin"
+pat2="7z|zip|tar|tgz|gz|bz2|zst|rar|deb|rpm|pkg|gzip|pdf"
+pat3="mobi|epub|png|jpeg|jpg|gif|pyc|otf|ttf|exe|dll|pcap"
+zstyle ':completion:*:(vim|nvim|vi|bat|less|view):*' ignored-patterns "*.($pat1|$pat2|$pat3)"
+unset pat1 pat2 pat3
+# When the only candidate is something we said to ignore, show a menu with it and the original text typed
+zstyle '*' single-ignored menu
+# Ignore arguments given earlier in the line
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
+# Complete filenames that come after multiple consecutive slashes
+zstyle ':completion:*' squeeze-slashes true
+# Which completers are used and in which order
+zstyle ':completion:*' completer _complete _match _prefix _approximate _ignored
+# Show the original text as an option in the completion menu
+zstyle ':completion:*:approximate-*:*' original true
+# Approximate completer auto-corrects args off by one character
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+# Increase the number of errors based on the length of the typed word.
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+# sudo does not look in the same binary paths
+zstyle ':completion:*:sudo:*' command-path '/usr/local/sbin' '/usr/local/bin' '/usr/sbin' '/usr/bin' '/sbin' '/bin'
+# Complete man pages and show sections that are available
+zstyle ':completion:*:manuals' separate-sections true
+# Insert the man page section when completing
+zstyle ':completion:*:manuals.([^1]*)' insert-sections true
+# Allways show the process to be killed even when only 1 matches
+zstyle ':completion:*:kill:*' force-list always
+# Enable persistent rehash https://unix.stackexchange.com/a/2180
+zstyle ':completion:*' rehash true
+# Display while in the completion menu for large lists
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 
 zstyle ':completion:*:*:*:users' ignored-patterns \
     '_*' abrt adm akmods amanda apache at avahi avahi-autoipd backup beaglidx \
@@ -206,6 +262,13 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
     systemd-timesync tcpdump tftp tomcat tss unbound usbmux uucp vcsa \
     vde2-net www-data wwwrun xfs
 
+zstyle ':completion:*:*:*:hosts' ignored-patterns \
+    localhost loopback ip6-localhost ip6-loopback \
+    localhost6 localhost6.localdomain6 localhost.localdomain \
+    localhost4 localhost4.localdomain4
+
+zstyle ':completion:*' fzf-search-display true
+
 local extract="
 # trim input(what you select)
 local in=\${\${\"\$(<{f})\"%\$'\0'*}#*\$'\0'}
@@ -217,7 +280,7 @@ realpath=\${(Qe)~realpath}
 "
 
 # give a preview of commandline arguments when completing `kill`
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
+zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
 zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
 
 # give a preview of directory by exa when completing cd
@@ -229,7 +292,9 @@ fi
 # silver is prefereable when using vscode because you can specify
 # 24-bit hex color codes for each segment, but otherwise powerline-go
 # offers greater functionality.
-if (( $+commands[silver] )) && [[ "$TERM_PROGRAM" == vscode || (( $+commands[powerline-go] == 0 )) ]] ; then
+if (( $+commands[starship] )) ; then
+    eval "$(starship init zsh)"
+elif (( $+commands[silver] )) && [[ "$TERM_PROGRAM" == vscode || (( $+commands[powerline-go] == 0 )) ]] ; then
     SILVER=(virtualenv:b48ead:2e3440 user:434c5e:d8dee9 dir:81a1c1:2e3440 git:a3be8c:2e3440:ebcb8b status:bf616a:d8dee9)
     export SILVER_SHELL=zsh
     eval "$(silver init)"
@@ -257,6 +322,10 @@ elif (( $+commands[powerline-go] )) ; then
     fi
 
     unfunction install_powerline_precmd
+fi
+
+if (( $+commands[zoxide] )) ; then
+    eval "$(zoxide init zsh)"
 fi
 
 _fzf_compgen_path() {
@@ -311,8 +380,10 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     if (( $+commands[fzf] )) ; then
         zplug 'wfxr/forgit'
-        zplug 'Aloxaf/fzf-tab'
+        # zplug 'Aloxaf/fzf-tab'
         # zplug 'lincheney/fzf-tab-completion', use:zsh/fzf-zsh-completion.sh
+        # Very cool, but so far a buggy experience
+        # zplug 'marlonrichert/zsh-autocomplete'
     fi
 
     # Seems to break things
@@ -320,8 +391,6 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug load # --verbose
 fi
-
-zstyle ':completion:*' fzf-search-display true
 
 (( $+commands[doge] )) && doge
 (( $+commands[linux_logo] )) && linux_logo -u -a

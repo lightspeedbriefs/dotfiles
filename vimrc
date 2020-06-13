@@ -44,10 +44,11 @@ Plug 'nixprime/cpsm', { 'do': './install.sh' }
 
 if executable('python')
     Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+    Plug 'petobens/poet-v'
 endif
 
 " Still in beta, has rough edges
-" Plug 'liuchengxu/vim-clap'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 " Unfortunately, skim lacks a maintainer for Fedora
 " so upstream is no longer shipping it:
@@ -151,8 +152,8 @@ Plug 'keith/investigate.vim'
 " Open file:line:col
 Plug 'kopischke/vim-fetch'
 
-" Nix syntax
-Plug 'LnL7/vim-nix'
+" toml syntax
+Plug 'cespare/vim-toml'
 
 " Meson syntax
 if executable('meson')
@@ -160,15 +161,14 @@ if executable('meson')
 endif
 
 " Dart syntax
-Plug 'dart-lang/dart-vim-plugin'
+if executable('dart')
+    Plug 'dart-lang/dart-vim-plugin'
+endif
 
 " Zig syntax
 if executable('zig')
     Plug 'ziglang/zig.vim'
 endif
-
-" Run google test framework unit tests within vim
-Plug 'alepez/vim-gtest'
 
 " Generate ultra-fast shortcuts to move anywhere
 Plug 'easymotion/vim-easymotion'
@@ -213,15 +213,20 @@ else
     Plug 'markonm/traces.vim'
 endif
 
-if executable('cmake') && executable('python') && executable('c++')
-    Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
-    " This needs to go *after* ultisnips in vimrc
-    " Plug 'tenfyzhong/CompleteParameter.vim'
+if executable('c++')
+    " Run google test framework unit tests within vim
+    Plug 'alepez/vim-gtest'
 
-    " Fork of YCM with better completion for function parameters
-    " See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
-    "Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
-    Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+    if executable('cmake') && executable('python')
+        Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --clangd-completer' } " . (executable('rustc') ? ' --racer-completer' : '') }
+        " This needs to go *after* ultisnips in vimrc
+        " Plug 'tenfyzhong/CompleteParameter.vim'
+
+        " Fork of YCM with better completion for function parameters
+        " See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
+        "Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
+        Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+    endif
 endif
 
 " }}}
@@ -294,7 +299,12 @@ set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number of lines to save for undo on a buffer reload
 set virtualedit=all
-set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc
+set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc " ignore generated files
+set wildignore+=*.pdf,*.wav,*.mp3,*.flac,*.ogg,*.mp4,*.avi,*.mkv,*.webm,*.iso " ignore binary files
+set wildignore+=*.dmg,*.exe,*.dll,*.pcacp,*.7z,*.deb,*.rpm,*.mobi,*.epub,*.otf,*.ttf " ignore binary files
+set wildignore+=*.zip,*.gz,*.xz,*.tar,*.rar,*.zst,*.bz2,*.tgz " ignore compressed/archive files
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*, " ignore SCM files
+set wildignore+=*.png,*.jpg,*.jpeg,*.gif " ignore image files
 set wildmode=list:longest,full
 set winwidth=85
 set cmdheight=2
@@ -527,18 +537,20 @@ autocmd BufEnter * nested :call tagbar#autoopen(0)
 "autocmd! BufWritePost * Neomake
 
 " {{{ vim-gtest
-augroup GTest
-    autocmd FileType cpp nnoremap <silent> <leader>tt :GTestRun<CR>
-    autocmd FileType cpp nnoremap <silent> <leader>tu :GTestRunUnderCursor<CR>
-    autocmd FileType cpp nnoremap          <leader>tc :GTestCase<space>
-    autocmd FileType cpp nnoremap          <leader>tn :GTestName<space>
-    autocmd FileType cpp nnoremap <silent> <leader>te :GTestToggleEnabled<CR>
-    autocmd FileType cpp nnoremap <silent> ]T         :GTestNext<CR>
-    autocmd FileType cpp nnoremap <silent> [T         :GTestPrev<CR>
-    autocmd FileType cpp nnoremap <silent> <leader>tf :CtrlPGTest<CR>
-    autocmd FileType cpp nnoremap <silent> <leader>tj :GTestJump<CR>
-    autocmd FileType cpp nnoremap          <leader>ti :GTestNewTest<CR>i
-augroup END
+if executable('c++')
+    augroup GTest
+        autocmd FileType cpp nnoremap <silent> <leader>tt :GTestRun<CR>
+        autocmd FileType cpp nnoremap <silent> <leader>tu :GTestRunUnderCursor<CR>
+        autocmd FileType cpp nnoremap          <leader>tc :GTestCase<space>
+        autocmd FileType cpp nnoremap          <leader>tn :GTestName<space>
+        autocmd FileType cpp nnoremap <silent> <leader>te :GTestToggleEnabled<CR>
+        autocmd FileType cpp nnoremap <silent> ]T         :GTestNext<CR>
+        autocmd FileType cpp nnoremap <silent> [T         :GTestPrev<CR>
+        autocmd FileType cpp nnoremap <silent> <leader>tf :CtrlPGTest<CR>
+        autocmd FileType cpp nnoremap <silent> <leader>tj :GTestJump<CR>
+        autocmd FileType cpp nnoremap          <leader>ti :GTestNewTest<CR>i
+    augroup END
+endif
 " }}}
 
 autocmd FileType startify setlocal buftype=
@@ -623,7 +635,6 @@ let g:is_bash = 1
 " airline config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ycm#enabled = 1
-let g:airline#extensions#promptline#snapshot_file = "~/.shell_prompt.sh"
 let g:airline_powerline_fonts = 1
 let g:airline_theme= 'onedark'
 
@@ -732,6 +743,10 @@ nmap <Leader>ad <Plug>(AerojumpDefault) " Boring mode
 
 " blamer config
 " let g:blamer_enabled = 1
+
+" poetv config
+let g:poetv_executables = ['poetry']
+let g:poetv_auto_activate = 1
 
 if has('nvim')
     lua require'colorizer'.setup()

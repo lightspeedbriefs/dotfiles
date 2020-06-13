@@ -1,9 +1,12 @@
-binpaths=(~/.cargo/bin ~/.poetry/bin ~/.local/bin ~/.nimble/bin)
+binpaths=(~/.cargo/bin ~/.local/bin)
 for binpath in $binpaths ; do
     if [[ -d $binpath ]] ; then
         export PATH=$binpath:$PATH
     fi
 done
+if [[ -x ~/.linuxbrew/bin/brew ]] ; then
+    eval $(~/.linuxbrew/bin/brew shellenv)
+fi
 unset binpaths
 export PYTHONPATH=/usr/lib64/python2.7/site-packages/lldb
 export CCACHE_PATH=/usr/bin
@@ -12,12 +15,15 @@ export PAGER=less
 if (( $+commands[code] )) && [[ "$TERM_PROGRAM" == vscode ]] ; then
     export EDITOR='code -r --wait'
     export VISUAL='code -r --wait'
+    export SUDO_EDITOR='code -r --wait'
 elif (( $+commands[nvim] )) ; then
     export EDITOR=nvim
     export VISUAL=nvim
+    export SUDO_EDITOR=nvim
 elif (( $+commands[vim] )) ; then
     export EDITOR=vim
     export VISUAL=vim
+    export SUDO_EDITOR=vim
 fi
 export HSTR_CONFIG=hicolor,prompt-bottom
 export HISTFILE=~/.zsh_history
@@ -32,6 +38,7 @@ export ENHANCD_DISABLE_HYPHEN=1
 export BAT_THEME=TwoDark
 # Nord colorscheme
 export FZF_DEFAULT_OPTS='
+  --ansi
   --color fg:#D8DEE9,bg:#2E3440,hl:#A3BE8C,fg+:#D8DEE9,bg+:#434C5E,hl+:#A3BE8C
   --color pointer:#BF616A,info:#4C566A,spinner:#4C566A,header:#4C566A,prompt:#81A1C1,marker:#EBCB8B
 '
@@ -46,8 +53,8 @@ if (( $+commands[lsd] )) ; then
     export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'lsd --icon=always --color=always {}'"
 fi
 if (( $+commands[fd] )) ; then
-    export FZF_DEFAULT_COMMAND='fd -t f'
-    export FZF_ALT_C_COMMAND='fd -t d --hidden --exclude ".git"'
+    export FZF_DEFAULT_COMMAND='fd -t f --color=always'
+    export FZF_ALT_C_COMMAND='fd -t d --hidden --exclude .git'
 elif (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
 elif (( $+commands[ag] )) ; then
