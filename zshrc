@@ -274,8 +274,8 @@ if (( $+commands[lsd] )) ; then
 fi
 
 # starship, silver, and powerline-go are in the Fedora repos
-# silver is prefereable to powerline-go when using vscode because you 
-# can specify 24-bit hex color codes for each segment, but otherwise 
+# silver is prefereable to powerline-go when using vscode because you
+# can specify 24-bit hex color codes for each segment, but otherwise
 # powerline-go offers greater functionality.
 if (( $+commands[starship] )) ; then
     eval "$(starship init zsh)"
@@ -311,6 +311,7 @@ fi
 
 if (( $+commands[zoxide] )) ; then
     eval "$(zoxide init zsh)"
+    alias zi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {2}'\" z -i"
 fi
 
 _fzf_compgen_path() {
