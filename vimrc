@@ -44,7 +44,9 @@ Plug 'nixprime/cpsm', { 'do': './install.sh' }
 
 if executable('python')
     Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-    Plug 'petobens/poet-v'
+    if executable('poetry')
+        Plug 'petobens/poet-v'
+    endif
 endif
 
 " Still in beta, has rough edges

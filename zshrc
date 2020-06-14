@@ -17,7 +17,6 @@ else
     alias ll='ls -lh'
 fi
 alias cx='chmod +x'
-alias egrep='egrep --color'
 if (( $+commands[nvim] )) ; then
     alias vi=nvim
     alias view='nvim -R'
@@ -40,20 +39,16 @@ alias ip='ip -color=auto'
 alias history='history -f'
 if (( $+commands[rg] )) ; then
     alias rf='rg --files -g'
-    alias findf='rg --files -g'
     alias cgrep='rg -tcpp'
 elif (( $+commands[ag] )) ; then
     alias rf='ag -g ""'
-    alias findf='ag -g ""'
     alias cgrep='ag --cpp'
-elif (( $+commands[fd] )) ; then
-    alias findf='fd -t f'
-else
-    alias findf='find . -type f -name'
 fi
 if (( $+commands[fd] )) ; then
+    alias findf='fd -t f'
     alias findd='fd -t d'
 else
+    alias findf='find . -type f -name'
     alias findd='find . -type d -name'
 fi
 # GNU diff received support for directly outputting
@@ -65,16 +60,10 @@ elif (( $+commands[colordiff] )) ; then
 elif (( $+commands[grc] )) ; then
     alias diff='grc -es --colour=auto diff'
 fi
-if (( $+commands[rougify] )) ; then
-    alias ccat='rougify -t base16.monokai'
-elif (( $+commands[pygmentize] )) ; then
-    alias ccat='pygmentize -g'
-fi
 if (( $+commands[podman] )) ; then
     alias docker=podman
 fi
 alias dmesg='dmesg -H'
-alias cgrep='rg --type cpp'
 alias gentags='ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --languages=c++'
 if (( $+commands[grc] )) ; then
     alias colourify='grc -es --colour=auto'
@@ -180,10 +169,6 @@ bindkey '\C-x\C-e' edit-command-line
 
 bindkey '^ ' autosuggest-execute
 
-if [[ -d ~/.zfunc ]] ; then
-    fpath+=~/.zfunc
-fi
-
 if [[ -f ~/.dir_colors && (( $+commands[dircolors] )) ]] ; then
     eval $(dircolors ~/.dir_colors)
     zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -288,10 +273,10 @@ if (( $+commands[lsd] )) ; then
     zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'lsd --icon=always --color=always $realpath'
 fi
 
-# Both silver and powerline-go are in the Fedora repos
-# silver is prefereable when using vscode because you can specify
-# 24-bit hex color codes for each segment, but otherwise powerline-go
-# offers greater functionality.
+# starship, silver, and powerline-go are in the Fedora repos
+# silver is prefereable to powerline-go when using vscode because you 
+# can specify 24-bit hex color codes for each segment, but otherwise 
+# powerline-go offers greater functionality.
 if (( $+commands[starship] )) ; then
     eval "$(starship init zsh)"
 elif (( $+commands[silver] )) && [[ "$TERM_PROGRAM" == vscode || (( $+commands[powerline-go] == 0 )) ]] ; then
