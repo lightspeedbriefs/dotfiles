@@ -1,6 +1,10 @@
 if has('nvim')
     let s:plugged_dir = stdpath('data') . '/plugged'
     if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+      if !executable("curl")
+        echoerr "You have to install curl or first install vim-plug yourself!"
+        execute "q!"
+      endif
       silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -8,6 +12,10 @@ if has('nvim')
 else
     let s:plugged_dir = '~/.vim/plugged'
     if empty(glob('~/.vim/autoload/plug.vim'))
+      if !executable("curl")
+        echoerr "You have to install curl or first install vim-plug yourself!"
+        execute "q!"
+      endif
       silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -279,7 +287,6 @@ set foldmethod=syntax
 set formatoptions+=n
 set hidden
 set hlsearch
-set laststatus=2
 set lazyredraw
 set linebreak
 set matchpairs+=<:>
@@ -665,6 +672,7 @@ let g:ctrlp_user_command = ['.git', 'git ls-files %s', executable('fd') ? 'fd -t
 let g:ctrlp_by_filename = 1
 let g:ctrlp_reuse_window = 'startify'
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+let g:ctrlp_user_command_async = 1
 
 " leaderf config
 " let g:Lf_WindowPosition = 'popup'
@@ -693,6 +701,10 @@ function! StartifyEntryFormat()
 endfunction
 
 " fzf config
+" Workaround https://github.com/junegunn/fzf.vim/issues/1028
+if has('nvim')
+    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.75 } }
+endif
 map <silent> <M-t> :Tags<CR>
 
 " command-t config
