@@ -33,7 +33,7 @@ export SAVEHIST=40000
 export HISTTIMEFORMAT="[%Y-%m-%d %H:%M:%S] "
 export HISTCONTROL="ignoredups"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export ENHANCD_FILTER=sk:fzf:fzy:percol:pick:selecta:fpp
+export ENHANCD_FILTER=fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
 export BAT_THEME=TwoDark
 # Nord colorscheme
@@ -54,7 +54,7 @@ if (( $+commands[lsd] )) ; then
 fi
 if (( $+commands[fd] )) ; then
     export FZF_DEFAULT_COMMAND='fd -t f --color=always'
-    export FZF_ALT_C_COMMAND='fd -t d --hidden --exclude .git'
+    export FZF_ALT_C_COMMAND='fd -t d --hidden --no-ignore-vcs --exclude .git'
 elif (( $+commands[rg] )) ; then
     export FZF_DEFAULT_COMMAND='rg --files'
 elif (( $+commands[ag] )) ; then
@@ -77,6 +77,6 @@ export LESS_TERMCAP_ue=$'\E[0m' # end underline
 export LESS_TERMCAP_us=$'\E[01;32m' # begin underline
 # For colored man pages, Konsole requires this set (see: https://unix.stackexchange.com/a/147)
 export GROFF_NO_SGR=yes
-# On OpenSuSE, show the first matching man page rather than a list of matching man pages 
+# On OpenSuSE, show the first matching man page rather than a list of matching man pages
 # (see https://www.suse.com/releasenotes/i386/openSUSE/11.1/RELEASE-NOTES.en.html)
 export MAN_POSIXLY_CORRECT=1
