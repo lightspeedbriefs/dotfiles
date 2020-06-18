@@ -374,6 +374,8 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
         # zplug 'marlonrichert/zsh-autocomplete'
     fi
 
+    zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
+
     # Seems to break things
     # zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 

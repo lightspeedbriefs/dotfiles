@@ -1,4 +1,9 @@
 binpaths=(~/.cargo/bin ~/.local/bin)
+dhpath=/usr/share/doc/git/contrib/diff-highlight
+if (( $+commands[diff-highlight] == 0 )) && [[ -x $dhpath/diff-highlight ]] ; then
+    binpaths+=($dhpath)
+fi
+unset dhpath
 for binpath in $binpaths ; do
     if [[ -d $binpath ]] ; then
         export PATH=$binpath:$PATH
