@@ -1,0 +1,4 @@
+--italic-text=always
+
+# Use C++ syntax for headers with .h extensions
+--map-syntax "*.h:C++"

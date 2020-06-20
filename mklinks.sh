@@ -43,6 +43,12 @@ file=~/.config/kitty/kitty.conf
 echo "Creating symlink to $file in home directory."
 'ln' -s $dir/kitty.conf $file
 
+'mkdir' -p ~/.config/bat
+file=~/.config/bat/config
+[[ -s $file ]] && 'mv' -b $file ~/dotfiles_old/
+echo "Creating symlink to $file in home directory."
+'ln' -s $dir/batconfig $file
+
 file=~/.gdbinit
 [[ -s $file ]] && 'mv' -b $file ~/dotfiles_old/
 'curl' -fLo $file https://raw.githubusercontent.com/cyrus-and/gdb-dashboard/master/.gdbinit
