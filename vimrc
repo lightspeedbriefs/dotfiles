@@ -107,6 +107,11 @@ Plug 'rhysd/git-messenger.vim'
 " Git commit browser
 Plug 'junegunn/gv.vim'
 
+" laxygit integration
+if has('nvim') && executable('lazygit')
+    Plug 'kdheepak/lazygit.vim', { 'branch': 'nvim-v0.4.3' }
+endif
+
 " Show git blame snippets to the right of the text on each line
 Plug 'APZelos/blamer.nvim'
 
@@ -613,6 +618,16 @@ let g:syntastic_cpp_compiler_options = ' -std=c++17 -Wall -Wextra'
 let g:ycm_always_populate_location_list = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+if executable('dart')
+    let s:analysis_server = fnamemodify(resolve(exepath('dart')), ':p:h') . '/snapshots/analysis_server.dart.snapshot'
+    let g:ycm_language_server = [
+      \   {
+      \     'name': 'dart',
+      \     'cmdline': [ 'dart', s:analysis_server, '--lsp' ],
+      \     'filetypes': [ 'dart' ],
+      \   },
+      \ ]
+endif
 
 " deoplete config
 let g:deoplete#enable_at_startup = 1
