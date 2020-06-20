@@ -367,17 +367,17 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
     zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
     if (( $+commands[fzf] )) ; then
-        zplug 'wfxr/forgit'
-        # zplug 'Aloxaf/fzf-tab'
-        # zplug 'lincheney/fzf-tab-completion', use:zsh/fzf-zsh-completion.sh
+        zplug "wfxr/forgit"
+        # zplug "Aloxaf/fzf-tab"
+        # zplug "lincheney/fzf-tab-completion", use:zsh/fzf-zsh-completion.sh
         # Very cool, but so far a buggy experience
-        # zplug 'marlonrichert/zsh-autocomplete'
+        # zplug "marlonrichert/zsh-autocomplete"
     fi
 
     zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
 
     # Seems to break things
-    # zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+    # zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
     zplug load # --verbose
 fi
