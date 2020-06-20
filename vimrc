@@ -336,6 +336,7 @@ endif
 if has('termguicolors')
     set termguicolors
 endif
+set updatetime=250
 
 let g:nord_italic = 1
 let g:nord_underline = 1
@@ -613,6 +614,18 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_compiler_options = ' -std=c++17 -Wall -Wextra'
+
+" gitgutter config
+" Use fontawesome icons as signs
+let g:gitgutter_sign_added = ''
+let g:gitgutter_sign_modified = ''
+let g:gitgutter_sign_removed = ''
+let g:gitgutter_sign_removed_first_line = ''
+let g:gitgutter_sign_modified_removed = ''
+
+" tagbar config
+" Use fontawesome chevrons for hierarchy icons
+let g:tagbar_iconchars = ['', '']
 
 " YouCompleteMe config
 let g:ycm_always_populate_location_list = 1
