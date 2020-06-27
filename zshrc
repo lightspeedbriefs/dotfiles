@@ -211,13 +211,9 @@ zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
 # Complete filenames that come after multiple consecutive slashes
 zstyle ':completion:*' squeeze-slashes true
 # Which completers are used and in which order
-zstyle ':completion:*' completer _complete _match _prefix _approximate _ignored
+zstyle ':completion:*' completer _complete _match _prefix _ignored
 # Show the original text as an option in the completion menu
 zstyle ':completion:*:approximate-*:*' original true
-# Approximate completer auto-corrects args off by one character
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-# Increase the number of errors based on the length of the typed word.
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 # sudo does not look in the same binary paths
 zstyle ':completion:*:sudo:*' command-path '/usr/local/sbin' '/usr/local/bin' '/usr/sbin' '/usr/bin' '/sbin' '/bin'
 # Complete man pages and show sections that are available
