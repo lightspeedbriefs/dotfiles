@@ -200,8 +200,8 @@ zstyle ':completion:*:*:umount:argument-*:device-labels' ignored-patterns 'proc'
 zstyle ':completion:*:*:umount:argument-*:*' group-order directories device-paths device-labels
 # Don't try to treat binary files like text
 pat1="wav|mp3|flac|ogg|mp4|avi|mkv|webm|iso|dmg|so|o|a|bin"
-pat2="7z|zip|tar|tgz|gz|bz2|zst|rar|deb|rpm|pkg|gzip|pdf"
-pat3="mobi|epub|png|jpeg|jpg|gif|pyc|otf|ttf|exe|dll|pcap"
+pat2="7z|zip|tar|tgz|gz|bz2|zst|xz|rar|deb|rpm|pkg|gzip|pdf"
+pat3="mobi|epub|docx|pptx|xslx|odt|ods|png|jpeg|jpg|gif|pyc|otf|ttf|exe|dll|pcap"
 zstyle ':completion:*:(vim|nvim|vi|bat|less|view):*' ignored-patterns "*.($pat1|$pat2|$pat3)"
 unset pat1 pat2 pat3
 # When the only candidate is something we said to ignore, show a menu with it and the original text typed

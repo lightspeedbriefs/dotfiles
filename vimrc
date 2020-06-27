@@ -315,6 +315,7 @@ set undoreload=10000 "maximum number of lines to save for undo on a buffer reloa
 set virtualedit=all
 set wildignore=*.o,*.d,*.so,*.a,*.bin,*.pyc " ignore generated files
 set wildignore+=*.pdf,*.wav,*.mp3,*.flac,*.ogg,*.mp4,*.avi,*.mkv,*.webm,*.iso " ignore binary files
+set wildignore+=*.pptx,*.xslx,*.docx,*.ods,*.odt " ignore binary files
 set wildignore+=*.dmg,*.exe,*.dll,*.pcacp,*.7z,*.deb,*.rpm,*.mobi,*.epub,*.otf,*.ttf " ignore binary files
 set wildignore+=*.zip,*.gz,*.xz,*.tar,*.rar,*.zst,*.bz2,*.tgz " ignore compressed/archive files
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*, " ignore SCM files
