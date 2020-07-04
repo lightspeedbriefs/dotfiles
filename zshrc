@@ -36,6 +36,7 @@ alias clang++="clang++ -Woverloaded-virtual -Wnon-virtual-dtor $cxx_opts $clang_
 alias clang="clang $c_opts $clang_opts"
 unset cxx_opts c_opts gxx_opts gnu_opts clang_opts link_flags
 alias ip='ip -color=auto'
+alias lg=lazygit
 alias history='history -f'
 if (( $+commands[rg] )) ; then
     alias rf='rg --files -g'

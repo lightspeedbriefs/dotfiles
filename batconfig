@@ -2,3 +2,8 @@
 
 # Use C++ syntax for headers with .h extensions
 --map-syntax "*.h:C++"
+
+--map-syntax "vimrc:VimL"
+
+--map-syntax "zshrc:Bourne Again Shell (bash)"
+--map-syntax "zshenv:Bourne Again Shell (bash)"
