@@ -153,7 +153,8 @@ Plug 'inside/vim-search-pulse'
 Plug 'gorkunov/smartpairs.vim'
 
 " Multiple selection
-Plug 'terryma/vim-multiple-cursors'
+" n.b. vim-multiple-cursors is now deprecated
+Plug 'mg979/vim-visual-multi'
 
 " Create an awesome status line
 Plug 'vim-airline/vim-airline'
@@ -403,10 +404,9 @@ nnoremap <silent> <leader>bt :BlamerToggle<cr>
 
 nnoremap <silent> <C-Bslash> :CtrlPBuffer<cr>
 
-inoremap <silent> <C-n> :set invhlsearch<CR>
-nnoremap <silent> <C-n> :set invhlsearch<CR>
+inoremap <silent> <C-h> :set invhlsearch<CR>
+nnoremap <silent> <C-h> :set invhlsearch<CR>
 noremap <silent> <C-s> :set invspell<CR>
-noremap <silent> <C-h> :MarkClear<CR>
 nnoremap <silent> <C-Right> :wincmd l<CR>
 nnoremap <silent> <C-Left> :wincmd h<CR>
 nnoremap <silent> <C-Up> :wincmd k<CR>
@@ -584,12 +584,6 @@ augroup END
 " }}}
 
 " {{{ Plugin config
-
-" Mark config
-" Mark may be found at http://www.vim.org/scripts/script.php?script_id=2666
-let g:mwIgnoreCase = 0
-let g:mwAutoLoadMarks = 1
-let g:mwDefaultHighlightingPalette = 'extended'
 
 " multiple-cursors config
 let g:multi_cursor_use_default_mapping=0
