@@ -107,7 +107,7 @@ Plug 'rhysd/git-messenger.vim'
 " Git commit browser
 Plug 'junegunn/gv.vim'
 
-" laxygit integration
+" lazygit integration
 if has('nvim') && executable('lazygit')
     Plug 'kdheepak/lazygit.vim', { 'branch': 'nvim-v0.4.3' }
 endif
