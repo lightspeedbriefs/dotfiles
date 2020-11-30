@@ -309,7 +309,8 @@ fi
 if (( $+commands[zoxide] )) ; then
     eval "$(zoxide init zsh)"
     if (( $+commands[lsd] )) ; then
-        alias zi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {2}'\" z -i"
+        alias zi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {2}'\" __zoxide_zi"
+        alias zqi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {2}'\" __zoxide_zqi"
     fi
 fi
 
