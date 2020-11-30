@@ -31,6 +31,7 @@
     rbc = rebase --continue
     rba = rebase --abort
     cp = cherry-pick
+    rg = grep -p --heading --break
 [include]
     path = ~/.gitconfig.local
 [rebase]
@@ -40,6 +41,7 @@
 [delta]
     syntax-theme = OneHalfLight
     line-numbers = true
+    side-by-side = true
     zero-style = syntax white
     hunk-header-style = syntax white
     file-style = black bold white
@@ -52,3 +54,6 @@
     line-numbers-right-style = black white
     line-numbers-minus-style = black white
     line-numbers-plus-style = black white
+[grep]
+    lineNumber = true
+    patternType = extended

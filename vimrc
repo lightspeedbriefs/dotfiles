@@ -725,10 +725,7 @@ function! StartifyEntryFormat()
 endfunction
 
 " fzf config
-" Workaround https://github.com/junegunn/fzf.vim/issues/1028
-if has('nvim')
-    let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.75 } }
-endif
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.75, 'highlight': 'Normal' } }
 map <silent> <M-t> :Tags<CR>
 
 " command-t config
@@ -785,6 +782,10 @@ nmap <Leader>ad <Plug>(AerojumpDefault) " Boring mode
 " poetv config
 let g:poetv_executables = ['poetry']
 let g:poetv_auto_activate = 1
+
+" clap config
+let g:clap_theme = 'nord'
+let g:clap_layout = { 'relative': 'editor' }
 
 if has('nvim')
     lua require'colorizer'.setup()
