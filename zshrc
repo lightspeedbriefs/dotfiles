@@ -378,6 +378,8 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
     # zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
     zplug load # --verbose
+
+    alias cd="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {1}'\" __enhancd::cd"
 fi
 
 (( $+commands[doge] )) && doge
