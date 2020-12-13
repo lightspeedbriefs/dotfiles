@@ -7,6 +7,11 @@ vim_plug_dir="$HOME/.vim/autoload"
 # list of files/folders to symlink in homedir
 files="vimrc gitconfig minttyrc colorgccrc color_coded clang_complete ycm_extra_conf.py zshenv zshrc"
 
+if ! command -v curl &>/dev/null ; then
+    echo "curl is not installed, please install first and then run this script" >&2
+    exit 1
+fi
+
 ##########
 
 # create dotfiles_old in homedir
