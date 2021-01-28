@@ -112,8 +112,12 @@ if has('nvim') && executable('lazygit')
     Plug 'kdheepak/lazygit.vim', { 'branch': 'nvim-v0.4.3' }
 endif
 
-" Show git blame snippets to the right of the text on each line
+" Show git blame with virtual text
 Plug 'APZelos/blamer.nvim'
+
+" Show git blame with virtual text
+" And also in the command line
+Plug 'zivyangll/git-blame.vim'
 
 " Superior alternatives to ack.vim
 " These plugins offer extremely similar functionality,
@@ -331,6 +335,8 @@ endif
 if has('nvim')
     set inccommand=split
 else
+    " https://github.com/neovim/neovim/issues/10996
+    set completeopt+=popup
     set undodir=~/.vim/undodir
     set directory=~/.vim/swap
     set backupdir=~/.vim/backup
@@ -619,6 +625,9 @@ let g:gitgutter_sign_removed = ''
 let g:gitgutter_sign_removed_first_line = ''
 let g:gitgutter_sign_modified_removed = ''
 
+" git-blame config
+let g:GBlameVirtualTextEnable = 1
+
 " tagbar config
 " Use fontawesome chevrons for hierarchy icons
 let g:tagbar_iconchars = ['', '']
@@ -786,6 +795,9 @@ let g:poetv_auto_activate = 1
 " clap config
 let g:clap_theme = 'nord'
 let g:clap_layout = { 'relative': 'editor' }
+
+" messenger config
+let g:git_messenger_extra_blame_args = '-w'
 
 if has('nvim')
     lua require'colorizer'.setup()

@@ -1,5 +1,7 @@
 [core]
-    pager = diff-highlight | less -r
+    pager = "{ [ $COLUMNS -lt 160 ] && delta || delta --side-by-side -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}; }"
+[interactive]
+    diffFilter = delta --color-only
 [credential]
     helper = cache --timeout=3600
 [diff]
@@ -39,21 +41,7 @@
 [icdiff]
     pager = less
 [delta]
-    syntax-theme = OneHalfLight
-    line-numbers = true
-    side-by-side = true
-    zero-style = syntax white
-    hunk-header-style = syntax white
-    file-style = black bold white
-    file-decoration-style = black white ul
-    hunk-header-decoration-style = black white box
-    minus-style = syntax "#ffe0e0"
-    minus-emph-style = syntax "#ffc0c0"
-    line-numbers-zero-style = black white
-    line-numbers-left-style = black white
-    line-numbers-right-style = black white
-    line-numbers-minus-style = black white
-    line-numbers-plus-style = black white
+    syntax-theme = TwoDark
 [grep]
     lineNumber = true
     patternType = extended
