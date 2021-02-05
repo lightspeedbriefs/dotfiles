@@ -37,7 +37,11 @@ export HISTSIZE=40000
 export SAVEHIST=40000
 export HISTTIMEFORMAT="[%Y-%m-%d %H:%M:%S] "
 export HISTCONTROL="ignoredups"
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS="error=01;31:warning=01;35:note=01;36:range1=32:range2=34:locus=01:\
+quote=01:path=01;36:fixit-insert=32:fixit-delete=31:\
+diff-filename=01:diff-hunk=32:diff-delete=31:diff-insert=32:\
+type-diff=01;32"
+export GCC_URLS=bel
 export ENHANCD_FILTER=fzf:fzy:percol:pick:selecta:fpp
 export ENHANCD_DISABLE_HYPHEN=1
 export BAT_THEME=TwoDark
@@ -55,7 +59,7 @@ if (( $+commands[bat] )) ; then
 fi
 export FZF_ALT_C_OPTS="--exit-0"
 if (( $+commands[lsd] )) ; then
-    export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'lsd --icon=always --color=always {}'"
+    export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'lsd --group-dirs=first --icon=always --color=always {}'"
 fi
 if (( $+commands[fd] )) ; then
     export FZF_DEFAULT_COMMAND='fd -t f --color=always'

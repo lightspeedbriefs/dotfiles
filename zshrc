@@ -1,7 +1,7 @@
 if (( $+commands[exa] )) ; then
     alias exa='exa -F'
-    alias xl='exa -lh --git'
-    alias lx='exa -lh --git'
+    alias xl='exa -lh --git --group-directories-first'
+    alias lx='exa -lh --git --group-directories-first'
 fi
 if (( $+commands[lsd] )) ; then
     alias tree='lsd --total-size --tree --blocks size,name'
@@ -12,9 +12,9 @@ else
 fi
 alias ls='ls --color=auto -F'
 if (( $+commands[grc] )) ; then
-    alias ll='grc -es --colour=auto ls -lhF --color'
+    alias ll='grc -es --colour=auto ls -lhF --color --group-directories-first --hyperlink'
 else
-    alias ll='ls -lh'
+    alias ll='ls -lhF --color --group-directories-first --hyperlink'
 fi
 alias cx='chmod +x'
 if (( $+commands[nvim] )) ; then
@@ -265,9 +265,9 @@ realpath=\${(Qe)~realpath}
 zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
 zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
 
-# give a preview of directory by exa when completing cd
+# give a preview of directory by lsd when completing cd
 if (( $+commands[lsd] )) ; then
-    zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'lsd --icon=always --color=always $realpath'
+    zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'lsd --group-dirs=first --icon=always --color=always $realpath'
 fi
 
 # starship, silver, and powerline-go are in the Fedora repos
@@ -309,8 +309,8 @@ fi
 if (( $+commands[zoxide] )) ; then
     eval "$(zoxide init zsh)"
     if (( $+commands[lsd] )) ; then
-        alias zi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {2}'\" __zoxide_zi"
-        alias zqi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {2}'\" __zoxide_zqi"
+        alias zi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --group-dirs=first --icon=always --color=always {2}'\" __zoxide_zi"
+        alias zqi="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --group-dirs=first --icon=always --color=always {2}'\" __zoxide_zqi"
     fi
 fi
 
@@ -327,7 +327,7 @@ _fzf_comprun() {
   shift
 
   case "$command" in
-    cd)           fzf "$@" --preview 'lsd --icon=always --color=always {}' ;;
+    cd)           fzf "$@" --preview 'lsd --group-dirs=first --icon=always --color=always {}' ;;
     *)            fzf "$@" ;;
   esac
 }
@@ -379,7 +379,7 @@ if [[ -f ~/.zplug/init.zsh ]] ; then
 
     zplug load # --verbose
 
-    alias cd="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --icon=always --color=always {1}'\" __enhancd::cd"
+    alias cd="FZF_DEFAULT_OPTS=\"\$FZF_DEFAULT_OPTS --preview 'lsd --group-dirs=first --icon=always --color=always {1}'\" __enhancd::cd"
 fi
 
 (( $+commands[doge] )) && doge

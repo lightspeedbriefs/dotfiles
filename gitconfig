@@ -45,3 +45,14 @@
 [grep]
     lineNumber = true
     patternType = extended
+[submodule]
+    recurse = true
+    fetchJobs = 0
+[status]
+    submoduleSummary = true
+    showStash = true
+[pull]
+    rebase = true
+[fetch]
+    prune = true
+    parallel = 0
