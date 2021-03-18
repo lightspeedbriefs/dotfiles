@@ -178,6 +178,11 @@ Plug 'cespare/vim-toml'
 " Meson syntax
 if executable('meson')
     Plug 'mesonbuild/meson', { 'rtp': 'data/syntax-highlighting/vim' }
+    Plug 'igankevich/mesonic'
+endif
+
+if executable('cmake')
+    Plug 'cdelledonne/vim-cmake'
 endif
 
 " Dart syntax
@@ -246,7 +251,13 @@ if executable('c++')
         " See: http://nosubstance.me/articles/2015-01-29-better-completion-for-cpp/
         "Plug 'oblitum/YouCompleteMe', { 'do': './install.py --clang-completer' . (executable('rustc') ? ' --racer-completer' : '') }
         Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+    else
+        " Fallback to ALE-based completion
+        let g:ale_completion_enabled = 1
     endif
+else
+    " Fallback to ALE-based completion
+    let g:ale_completion_enabled = 1
 endif
 
 " }}}
@@ -636,6 +647,13 @@ let g:tagbar_iconchars = ['', '']
 let g:ycm_always_populate_location_list = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+" Recommended settings for clangd (see https://clangd.llvm.org/installation.html)
+" Let clangd fully control code completion
+let g:ycm_clangd_uses_ycmd_caching = 0
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+if executable('clangd')
+    let g:ycm_clangd_binary_path = exepath('clangd')
+endif
 if executable('dart')
     let s:analysis_server = fnamemodify(resolve(exepath('dart')), ':p:h') . '/snapshots/analysis_server.dart.snapshot'
     let g:ycm_language_server = [
@@ -643,6 +661,11 @@ if executable('dart')
       \     'name': 'dart',
       \     'cmdline': [ 'dart', s:analysis_server, '--lsp' ],
       \     'filetypes': [ 'dart' ],
+      \   },
+      \   {
+      \     'name': 'zls',
+      \     'cmdline': [ 'zls' ],
+      \     'filetypes': [ 'zig' ],
       \   },
       \ ]
 endif
@@ -687,18 +710,16 @@ let g:neomake_cpp_clang_args = ["-std=c++17", "-Wall", "-Wextra"]
 let g:matchup_matchparen_offscreen = {'method': 'popup'}
 
 " ALE config
-let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
-let g:ale_cpp_clangtidy_options = '-std=c++17 -Wall -Wextra'
-let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra -Wsuggest-override -Wsuggest-final-types -Wsuggest-final-methods -Wdisabled-optimization'
-let g:ale_cpp_cppcheck_options = '--enable=style --suppress=passedByValue'
-
-" Disable the checks that ALE runs in favor of those from .clang-tidy
-let g:ale_cpp_clangtidy_checks = []
-
-" Only enable cppcheck and clang-tidy, as they utilize compile_commands.json
-let g:ale_linters = {
-\   'cpp': ['clangtidy', 'cppcheck'],
-\}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+" Build directory names compatible with vim-cmake
+let g:ale_c_build_dir_names = ['build', 'Debug', 'Release', 'RelWithDebInfo']
+let g:ale_floating_preview = 1
+" ALE can fire off a *lot* of CPU-intensive programs at once, so try to
+" avoid overwhelming the system
+if executable('nice') && !exists('g:ale_completion_enabled')
+    let g:ale_command_wrapper = 'nice -n10'
+endif
 
 " ctrlp config
 let g:ctrlp_user_command = ['.git', 'git ls-files %s', executable('fd') ? 'fd -t f . %s' : (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
