@@ -720,6 +720,18 @@ let g:ale_floating_preview = 1
 if executable('nice') && !exists('g:ale_completion_enabled')
     let g:ale_command_wrapper = 'nice -n10'
 endif
+" Avoid using cppcheck because ALE does not pass it the --file-filter option
+" and therefore it tries to check the entire project rather than just the file
+" currently being edited
+let g:ale_linters = {
+\   'cpp': ['cc', 'flawfinder'],
+\}
+" Tell ALE to use GCC because we already get diagnostics from the clang
+" tooling through clangd
+if executable('g++')
+    let g:ale_cpp_cc_executable = 'g++'
+endif
+let g:ale_cpp_cc_options = '-std=c++17 -Wall -Wextra'
 
 " ctrlp config
 let g:ctrlp_user_command = ['.git', 'git ls-files %s', executable('fd') ? 'fd -t f . %s' : (executable('rg') ? 'rg --files %s' : 'find %s -type f')]
