@@ -58,7 +58,8 @@ if executable('python')
 endif
 
 " Still in beta, has rough edges
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+" Disabled because it consumes over 700MB after building!
+" Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 " Unfortunately, skim lacks a maintainer for Fedora
 " so upstream is no longer shipping it:

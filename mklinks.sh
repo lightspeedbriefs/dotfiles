@@ -5,7 +5,7 @@ olddir=~/dotfiles_old                       # old dotfiles backup directory
 nvim_plug="$HOME/.local/share/nvim/site/autoload/plug.vim"
 vim_plug_dir="$HOME/.vim/autoload"
 # list of files/folders to symlink in homedir
-files="vimrc gitconfig minttyrc colorgccrc color_coded clang_complete ycm_extra_conf.py zshenv zshrc"
+files="vimrc gitconfig minttyrc zshenv zshrc"
 
 if ! command -v curl &>/dev/null ; then
     echo "curl is not installed, please install first and then run this script" >&2
